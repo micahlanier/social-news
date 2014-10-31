@@ -27,4 +27,10 @@ Huffington Post			huffingtonpost		huffingtonpost
 Slate					slate				slate
 
 BBC						bbcworld			bbcworldnews
+
+The Daily Mail			mailonline			dailymail
+The Guardian			guardian			theguardian
+
+Yahoo News				yahoonews			yahoonews
+
 NPR News				nprnews				npr
