@@ -1,0 +1,30 @@
+Organization			Twitter				Facebook
+--------------------------------------------------------------
+NY Times				nytimes				nytimes
+Wall Street Journal		wsj					wsj
+Washington Post			washingtonpost		washingtonpost
+Boston Globe			bostonglobe			globe
+LA Times				latimes				latimes
+USA Today				usatoday			usatoday
+
+CNN						cnn					cnn
+Fox News				foxnews				foxnews
+MSNBC					msnbc				msnbc
+
+ABC News				abc					abcnews
+CBS News				cbsnews				cbsnews
+NBC News				nbcnews				nbcnews
+
+Associated Press		ap					apnews
+AFP						afp					afpnewsenglish
+Reuters					reuters				reuters
+
+Time					time				time
+Newsweek				newsweek			newsweek
+
+The Daily Beast			dailybeast			thedailybeast
+Huffington Post			huffingtonpost		huffingtonpost
+Slate					slate				slate
+
+BBC						bbcworld			bbcworldnews
+NPR News				nprnews				npr
