@@ -20,7 +20,7 @@ accounts   = ['nytimes','wsj','washingtonpost','globe','latimes','usatoday']
 # Upper limit of date.
 maxDate = dt.datetime(2014,11,01,tzinfo=dateutil.tz.tzutc()) #dt.datetime.utcnow()
 # Lower limit of date.
-minDate = dt.datetime(2014,10,01,tzinfo=dateutil.tz.tzutc())
+minDate = dt.datetime(2014, 9,01,tzinfo=dateutil.tz.tzutc())
 # Facebook is not as explicit as Twitter about limiting. Set this as needed if you run into any issues.
 postLimit = 75
 
