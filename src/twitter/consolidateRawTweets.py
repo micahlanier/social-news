@@ -39,8 +39,8 @@ for sn in screenNames:
 	# If we end up with a lot of them we may need to be more careful here.
 	consolidatedTweets = dict()
 
-	# Keep track of tweets processed; min/max date.
-	tweetsProcessed = 0
+	# Keep track of tweets read; min/max date.
+	tweetsRead = 0
 	minTweetDate = None
 	maxTweetDate = None
 
@@ -63,6 +63,8 @@ for sn in screenNames:
 			currentTweetDate = dateutil.parser.parse(rawTweet['created_at'])
 			minTweetDate = min([tDate for tDate in [minTweetDate, currentTweetDate] if tDate is not None])
 			maxTweetDate = max([tDate for tDate in [maxTweetDate, currentTweetDate] if tDate is not None])
+		# Keep track of tweets read.
+		tweetsRead += len(rawTweets)
 
 	# Set up folder if it doesn't exist.
 	consolidatedSnDirectory = consolidatedTweetsDirectory + sn + '/'
@@ -75,5 +77,6 @@ for sn in screenNames:
 
 	# Status.
 	print 'Done consolidating tweets for @%s.' % sn
-	print 'Read %d tweets total.' % len(consolidatedTweets)
+	print 'Read %d tweets total.' % tweetsRead
+	print 'Consolidated to %d tweets.' % len(consolidatedTweets)
 	print 'Dates: %s to %s' % (str(minTweetDate),str(maxTweetDate))
