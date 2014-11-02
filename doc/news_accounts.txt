@@ -22,7 +22,7 @@ Reuters					reuters				reuters
 Time					time				time
 Newsweek				newsweek			newsweek
 
-The Daily Beast			dailybeast			thedailybeast
+The Daily Beast			thedailybeast		thedailybeast
 Huffington Post			huffingtonpost		huffingtonpost
 Slate					slate				slate
 
