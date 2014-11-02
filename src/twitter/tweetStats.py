@@ -54,14 +54,11 @@ for sn in screenNames:
 		tweetDate = dateutil.parser.parse(tweet['created_at'])
 		tweetId = int(tweet['id'])
 		# Calculate date stats.
-		if maxTweetDate == None or tweetDate > maxTweetDate:
-			maxTweetDate = tweetDate
-		if minTweetDate == None or tweetDate < minTweetDate:
-			minTweetDate = tweetDate
-		if maxTweetId == None or tweetId > maxTweetId:
-			maxTweetId = tweetId
-		if minTweetId == None or tweetId < minTweetId:
-			minTweetId = tweetId
+		minTweetDate = min([tDate for tDate in [minTweetDate, tweetDate] if tDate is not None])
+		maxTweetDate = max([tDate for tDate in [maxTweetDate, tweetDate] if tDate is not None])
+		# Calculate ID stats.
+		minTweetId = min([tId for tId in [minTweetId, tweetId] if tId is not None])
+		maxTweetId = max([tId for tId in [maxTweetId, tweetId] if tId is not None])
 
 	# Output
 	print '\tMax Date: %s' % str(maxTweetDate)
