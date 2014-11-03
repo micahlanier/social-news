@@ -2,7 +2,7 @@
 
 """
 
-This script will consolidate raw tweet files into one large JSON file (timestamped by runtime).
+This script will output statistics about consolidated tweets.
 
 """
 
