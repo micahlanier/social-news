@@ -35,7 +35,7 @@ if type(screenNames) == type('str'):
 
 # Iterate over screen names.
 for sn in screenNames:
-	print '@%s:' % sn
+	print '\n@%s:' % sn
 
 	# Get consolidated tweet files; get the most recent (file -1).
 	tweetFile = consolidatedTweetsDirectory + sn + '/' + [f for f in os.listdir(consolidatedTweetsDirectory + '/' + sn) if f[-5:] == '.json'][-1]
