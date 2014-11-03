@@ -9,7 +9,9 @@ This script will consolidate raw tweet files into one large JSON file (timestamp
 ##### Configuration
 
 # Edit things here to your liking. But please don't commit them needlessly.
-screenNames   = ['nytimes','cnn']
+
+# Set to string "all" to summarize all consolidated tweets; otherwise, use a list.
+screenNames = 'all' # screenNames = ['nytimes']
 
 
 
@@ -27,13 +29,17 @@ consolidatedTweetsDirectory = '../../../data/twitter/consolidated/'
 # Get timestamp of current run.
 timestampFilename = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S') + '.json'
 
+# Traverse all SNs if set to do so.
+if type(screenNames) == type('str'):
+	screenNames = [sn for sn in os.listdir(rawTweetsDirectory) if sn != '.DS_Store']
+
 
 
 ##### Get Tweets
 
 # Iterate over screen names.
 for sn in screenNames:
-	print 'Consolidating tweets for @%s.' % sn
+	print '\nConsolidating tweets for @%s.' % sn
 
 	# We're going to hold tweets in one dict.
 	# If we end up with a lot of them we may need to be more careful here.
@@ -73,7 +79,7 @@ for sn in screenNames:
 
 	# Dump to file.
 	filename = consolidatedSnDirectory + '/' + timestampFilename
-	json.dump(consolidatedTweets, open(filename,'w'))
+	json.dump(consolidatedTweets.values(), open(filename,'w'))
 
 	# Status.
 	print 'Done consolidating tweets for @%s.' % sn
