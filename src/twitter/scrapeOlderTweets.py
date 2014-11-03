@@ -16,7 +16,12 @@ import dateutil.parser
 
 # Enter a single screen name to scrape.
 sn = 'nytimes'
+
+# Date to go back to.
 until = dateutil.parser.parse('2014/10/01')
+
+# Number of tweets to consolidate. Output will be in files with this many tweets.
+tweetsPerFile = 100
 
 
 
@@ -90,6 +95,7 @@ print 'Will start search at %d - 1' % minTweetId
 tweets = []
 
 # Statistics.
+totalTweets = 0
 minTweetDate = None
 maxTweetDate = None
 
@@ -128,19 +134,28 @@ while True:
 		# Wait before making another request.
 		time.sleep(secondsToWait)
 
-	# Break if we've gone back far enough.
-	if minTweetDate < until:
-		break
+	# Write out if we've hit the per-file limit or have gone back far enough.
+	if len(tweets) >= tweetsPerFile or minTweetDate < until:
+		# Stats.
+		totalTweets += len(tweets)
 
-# Log.
-print 'Retrieved %d tweets.' % len(tweets)
+		# Status.
+		print 'Writing %d tweets to file %s' % (len(tweets), timestampFilename)
 
-# Dump to file.
-filename = rawTweetsDirectory + timestampFilename
-json.dump(tweets, open(filename,'w'))
+		# Output to file.
+		filename = rawTweetsDirectory + timestampFilename
+		json.dump(tweets, open(filename,'w'))
+
+		# Reset relevant objects.
+		timestampFilename = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S') + '.json'
+		tweets = []
+
+		# Break if we've gone back far enough.
+		if minTweetDate < until:
+			break
 
 # Status.
 print 'Done retrieving tweets for @%s.' % sn
-print 'Read %d tweets total.' % len(tweets)
+print 'Read %d tweets total.' % totalTweets
 print 'Dates: %s to %s' % (str(minTweetDate),str(maxTweetDate))
 print 'Oldest ID: %d' % minTweetId
