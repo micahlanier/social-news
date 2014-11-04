@@ -62,11 +62,11 @@ for acct in accounts:
 		postDate = dateutil.parser.parse(post['created_time'])
 		postId = post['id']
 		# Calculate date stats.
-		minPostDate = min([tDate for tDate in [minPostDate, postDate] if tDate is not None])
-		maxPostDate = max([tDate for tDate in [maxPostDate, postDate] if tDate is not None])
+		minPostDate = min([d for d in [minPostDate, postDate] if d is not None])
+		maxPostDate = max([d for d in [maxPostDate, postDate] if d is not None])
 		# Calculate ID stats.
-		# minPostId = min([pId for pId in [minPostId, postId] if pId is not None])
-		# maxPostId = max([pId for pId in [maxPostId, postId] if pId is not None])
+		# minPostId = min([i for i in [minPostId, postId] if i is not None])
+		# maxPostId = max([i for i in [maxPostId, postId] if i is not None])
 
 	# Output
 	print '\tPost count: %d' % len(posts)
