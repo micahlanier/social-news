@@ -34,6 +34,13 @@ if type(accounts) == type('str'):
 
 ##### Get Posts
 
+# General stats about all posts.
+totalPosts = 0
+minMaxPostDate = None
+maxMaxPostDate = None
+minMinPostDate = None
+maxMinPostDate = None
+
 # Iterate over accounts.
 for acct in accounts:
 	print '\n@%s:' % acct
@@ -47,8 +54,8 @@ for acct in accounts:
 	# Initialize stat containers.
 	maxPostDate = None
 	minPostDate = None
-	maxPostId = None
-	minPostId = None
+	# maxPostId = None
+	# minPostId = None
 
 	for post in posts:
 		# Save fields we're interested in.
@@ -58,12 +65,33 @@ for acct in accounts:
 		minPostDate = min([tDate for tDate in [minPostDate, postDate] if tDate is not None])
 		maxPostDate = max([tDate for tDate in [maxPostDate, postDate] if tDate is not None])
 		# Calculate ID stats.
-		minPostId = min([pId for pId in [minPostId, postId] if pId is not None])
-		maxPostId = max([pId for pId in [maxPostId, postId] if pId is not None])
+		# minPostId = min([pId for pId in [minPostId, postId] if pId is not None])
+		# maxPostId = max([pId for pId in [maxPostId, postId] if pId is not None])
 
 	# Output
+	print '\tPost count: %d' % len(posts)
 	print '\tMax Date: %s' % str(maxPostDate)
 	print '\tMin Date: %s' % str(minPostDate)
-	print '\tMax Post ID: %s' % maxPostId
-	print '\tMin Post ID: %s' % minPostId
-	print '\tPost count: %d' % len(posts)
+	# print '\tMax Post ID: %s' % maxPostId
+	# print '\tMin Post ID: %s' % minPostId
+
+	# Update general statistics.
+	# Posts.
+	totalPosts += len(posts)
+	# Max dates.
+	minMaxPostDate = min([d for d in [minMaxPostDate, maxPostDate] if d is not None])
+	maxMaxPostDate = max([d for d in [maxMaxPostDate, maxPostDate] if d is not None])
+	# Min dates.
+	minMinPostDate = min([d for d in [minMinPostDate, minPostDate] if d is not None])
+	maxMinPostDate = max([d for d in [maxMinPostDate, minPostDate] if d is not None])
+
+# General stats if we've examined more than one account.
+if len(accounts) > 1:
+	print '\nOverall Statistics:'
+	print '\tPost count: %d' % totalPosts
+	print '\tMax Dates:'
+	print '\t\tMin(Max Date): %s' % str(minMaxPostDate)
+	print '\t\tMax(Max Date): %s' % str(maxMaxPostDate)
+	print '\tMin Dates:'
+	print '\t\tMin(Min Date): %s' % str(minMinPostDate)
+	print '\t\tMax(Min Date): %s' % str(maxMinPostDate)
