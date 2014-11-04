@@ -33,6 +33,13 @@ if type(screenNames) == type('str'):
 
 ##### Get Tweets
 
+# General stats about all posts.
+totalTweets = 0
+minMaxTweetDate = None
+maxMaxTweetDate = None
+minMinTweetDate = None
+maxMinTweetDate = None
+
 # Iterate over screen names.
 for sn in screenNames:
 	print '\n@%s:' % sn
@@ -54,11 +61,11 @@ for sn in screenNames:
 		tweetDate = dateutil.parser.parse(tweet['created_at'])
 		tweetId = int(tweet['id'])
 		# Calculate date stats.
-		minTweetDate = min([tDate for tDate in [minTweetDate, tweetDate] if tDate is not None])
-		maxTweetDate = max([tDate for tDate in [maxTweetDate, tweetDate] if tDate is not None])
+		minTweetDate = min([d for d in [minTweetDate, tweetDate] if d is not None])
+		maxTweetDate = max([d for d in [maxTweetDate, tweetDate] if d is not None])
 		# Calculate ID stats.
-		minTweetId = min([tId for tId in [minTweetId, tweetId] if tId is not None])
-		maxTweetId = max([tId for tId in [maxTweetId, tweetId] if tId is not None])
+		minTweetId = min([i for i in [minTweetId, tweetId] if i is not None])
+		maxTweetId = max([i for i in [maxTweetId, tweetId] if i is not None])
 
 	# Output
 	print '\tMax Date: %s' % str(maxTweetDate)
@@ -66,3 +73,25 @@ for sn in screenNames:
 	print '\tMax Tweet ID: %d' % maxTweetId
 	print '\tMin Tweet ID: %d' % minTweetId
 	print '\tTweet count: %d' % len(tweets)
+
+	# Update general statistics.
+	# Posts.
+	totalTweets += len(tweets)
+	# Max dates.
+	minMaxTweetDate = min([d for d in [minMaxTweetDate, maxTweetDate] if d is not None])
+	maxMaxTweetDate = max([d for d in [maxMaxTweetDate, maxTweetDate] if d is not None])
+	# Min dates.
+	minMinTweetDate = min([d for d in [minMinTweetDate, minTweetDate] if d is not None])
+	maxMinTweetDate = max([d for d in [maxMinTweetDate, minTweetDate] if d is not None])
+
+
+# General stats if we've examined more than one account.
+if len(screenNames) > 1:
+	print '\nOverall Statistics:'
+	print '\tTweet count: %d' % totalTweets
+	print '\tMax Dates:'
+	print '\t\tMin(Max Date): %s' % str(minMaxTweetDate)
+	print '\t\tMax(Max Date): %s' % str(maxMaxTweetDate)
+	print '\tMin Dates:'
+	print '\t\tMin(Min Date): %s' % str(minMinTweetDate)
+	print '\t\tMax(Min Date): %s' % str(maxMinTweetDate)
