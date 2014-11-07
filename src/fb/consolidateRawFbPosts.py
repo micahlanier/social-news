@@ -9,7 +9,9 @@ This script will consolidate raw post files into one large JSON file (timestampe
 ##### Configuration
 
 # Edit things here to your liking. But please don't commit them needlessly.
-accounts  = ['nytimes','wsj','washingtonpost','globe','latimes','usatoday']
+
+# List of accounts to consolidate or "all" to consolidate all of them.
+accounts = 'all' # accounts  = ['nytimes','wsj','washingtonpost','globe','latimes','usatoday']
 
 
 
@@ -25,7 +27,11 @@ import os
 rawPostsDirectory = '../../../data/facebook/raw/'
 consolidatedPostsDirectory = '../../../data/facebook/consolidated/'
 # Get timestamp of current run.
-timestampFilename = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S') + '.json'
+timestampFilename = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
+
+# Traverse all accounts if set to do so.
+if type(accounts) == type('str'):
+	accounts = [acct for acct in os.listdir(rawPostsDirectory) if acct != '.DS_Store']
 
 
 
@@ -66,14 +72,9 @@ for acct in accounts:
 		# Keep track of posts read.
 		postsRead += len(rawPosts)
 
-	# Set up folder if it doesn't exist.
-	consolidatedAcctDirectory = consolidatedPostsDirectory + acct + '/'
-	if not os.path.exists(consolidatedAcctDirectory):
-		os.makedirs(consolidatedAcctDirectory)
-
 	# Dump to file.
-	filename = consolidatedAcctDirectory + '/' + timestampFilename
-	json.dump(consolidatedPosts, open(filename,'w'))
+	filename = consolidatedPostsDirectory + acct + '-' + timestampFilename + '.json'
+	json.dump(consolidatedPosts.values(), open(filename,'w'))
 
 	# Status.
 	print 'Done consolidating posts for @%s.' % acct

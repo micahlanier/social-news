@@ -27,7 +27,7 @@ import os
 rawTweetsDirectory = '../../../data/twitter/raw/'
 consolidatedTweetsDirectory = '../../../data/twitter/consolidated/'
 # Get timestamp of current run.
-timestampFilename = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S') + '.json'
+timestampFilename = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
 # Traverse all SNs if set to do so.
 if type(screenNames) == type('str'):
@@ -72,13 +72,8 @@ for sn in screenNames:
 		# Keep track of tweets read.
 		tweetsRead += len(rawTweets)
 
-	# Set up folder if it doesn't exist.
-	consolidatedSnDirectory = consolidatedTweetsDirectory + sn + '/'
-	if not os.path.exists(consolidatedSnDirectory):
-		os.makedirs(consolidatedSnDirectory)
-
 	# Dump to file.
-	filename = consolidatedSnDirectory + '/' + timestampFilename
+	filename = consolidatedTweetsDirectory + '/' + sn + '-' + timestampFilename + '.json'
 	json.dump(consolidatedTweets.values(), open(filename,'w'))
 
 	# Status.

@@ -28,7 +28,7 @@ import os
 consolidatedPostsDirectory = '../../../data/facebook/consolidated/'
 # Traverse all accounts if set to do so.
 if type(accounts) == type('str'):
-	accounts = [sn for sn in os.listdir(consolidatedPostsDirectory) if sn != '.DS_Store']
+	accounts = [cFile[:cFile.find('-')] for cFile in os.listdir(consolidatedPostsDirectory) if cFile != '.DS_Store']
 
 
 
@@ -46,7 +46,7 @@ for acct in accounts:
 	print '\n@%s:' % acct
 
 	# Get consolidated post files; get the most recent (file -1).
-	postFile = consolidatedPostsDirectory + acct + '/' + [f for f in os.listdir(consolidatedPostsDirectory + '/' + acct) if f[-5:] == '.json'][-1]
+	postFile = consolidatedPostsDirectory + [f for f in os.listdir(consolidatedPostsDirectory) if f.find(acct) == 0 and f[-5:] == '.json'][-1]
 
 	# Load posts.
 	posts = json.load(open(postFile))

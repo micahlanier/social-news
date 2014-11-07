@@ -36,9 +36,9 @@ outputDirectory = '../../../data/exploration/matching/'
 fbFiles = []
 twFiles = []
 for s in fbScreenNames:
-	fbFiles.append(consolidatedFbDirectory + s + '/' + os.listdir(consolidatedFbDirectory + s)[-1])
+	fbFiles.append(consolidatedFbDirectory + [f for f in os.listdir(consolidatedFbDirectory) if f.find(s) == 0 and f[-5:] == '.json'][-1])
 for s in twScreenNames:
-	twFiles.append(consolidatedTwDirectory + s + '/' + os.listdir(consolidatedTwDirectory + s)[-1])
+	twFiles.append(consolidatedTwDirectory + [f for f in os.listdir(consolidatedTwDirectory) if f.find(s) == 0 and f[-5:] == '.json'][-1])
 
 # Containers for content.
 fbPosts = []

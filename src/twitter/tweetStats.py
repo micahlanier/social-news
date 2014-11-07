@@ -2,7 +2,7 @@
 
 """
 
-This script will output statistics about consolidated tweets.
+This script outputs statistics about consolidated tweets.
 
 """
 
@@ -27,7 +27,7 @@ import os
 consolidatedTweetsDirectory = '../../../data/twitter/consolidated/'
 # Traverse all SNs if set to do so.
 if type(screenNames) == type('str'):
-	screenNames = [sn for sn in os.listdir(consolidatedTweetsDirectory) if sn != '.DS_Store']
+	screenNames = [cFile[:cFile.find('-')] for cFile in os.listdir(consolidatedTweetsDirectory) if cFile != '.DS_Store']
 
 
 
@@ -45,7 +45,7 @@ for sn in screenNames:
 	print '\n@%s:' % sn
 
 	# Get consolidated tweet files; get the most recent (file -1).
-	tweetFile = consolidatedTweetsDirectory + sn + '/' + [f for f in os.listdir(consolidatedTweetsDirectory + '/' + sn) if f[-5:] == '.json'][-1]
+	tweetFile = consolidatedTweetsDirectory + [f for f in os.listdir(consolidatedTweetsDirectory) if f.find(sn) == 0 and f[-5:] == '.json'][-1]
 
 	# Load tweets.
 	tweets = json.load(open(tweetFile))
