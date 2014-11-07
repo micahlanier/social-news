@@ -16,7 +16,7 @@ Relevant Twitter API documentation:
 ##### Configuration
 
 # Edit things here to your liking. But please don't commit them needlessly.
-screenNames   = ['nytimes','cnn']
+screenNames   = ['huffingtonpost','nytimes','afp','ap','bbcworld','bostonglobe','cnn','foxnews','guardian','latimes','mailonline','msnbc','newsweek','nprnews','reuters','slate','thedailybeast','time','usatoday','washingtonpost','wsj','yahoonews']
 
 
 
