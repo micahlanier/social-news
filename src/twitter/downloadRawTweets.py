@@ -15,8 +15,8 @@ Relevant Twitter API documentation:
 
 ##### Configuration
 
-# Edit things here to your liking. But please don't commit them needlessly.
-screenNames   = ['huffingtonpost','nytimes','afp','ap','bbcworld','bostonglobe','cnn','foxnews','guardian','latimes','mailonline','msnbc','newsweek','nprnews','reuters','slate','thedailybeast','time','usatoday','washingtonpost','wsj','yahoonews']
+# List of screen names to fetch.
+screenNames   = ['huffingtonpost','nytimes','afp','ap','bbcworld','bostonglobe','cnn','foxnews','guardian','latimes','mailonline','msnbc','newsweek','nprnews','reuters','slate','thedailybeast','time','usatoday','washingtonpost','wsj','yahoonews','abc','cbsnews','nbcnews']
 
 
 
