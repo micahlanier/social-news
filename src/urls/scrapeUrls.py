@@ -12,11 +12,12 @@ Note that this script contains little inline configuration. URL scraping takes a
 The best solution is to parallelize execution. But parallelization in this script is a pain, so just do it by running the script several times simultaneously.
 
 To run, execute with the following parameters:
-	python scrapeUrls.py [network] [username] [delay]
+	python scrapeUrls.py [network] [username] [delay] [scrapeContent]
 Parameters:
 	* network: one of 'facebook' or 'twitter'
 	* username: account/screen name for the given network
 	* delay: delay in seconds to wait before retrieving subsequent URLs
+	* scrapeContent: 1 to scrape content, 0 to stop before making any request to the final link destination
 
 The last parameter is complicated. Some hosts are fine with 1 or two seconds delay (e.g., nytimes). Others need 4+ seconds (cnn).
 Setting this value is more art than science, so good luck.
@@ -64,6 +65,13 @@ currTimestamp = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 network = str(sys.argv[1])
 sn = str(sys.argv[2])
 sleepSeconds = int(sys.argv[3])
+scrapeContent = True if int(sys.argv[4]) else 0
+
+# Handle target domains for non-scraping.
+if not scrapeContent:
+	nonScrapingData = json.load(open('../../conf/urlTargetDomains.json'))[sn]
+	targetDomain = nonScrapingData['target']
+	targetWhitelist = nonScrapingData['whitelist']
 
 
 
@@ -79,6 +87,38 @@ def associatedUrls(network,post):
 		return [u['expanded_url'] for u in post['entities']['urls']]
 	return []
 
+"""
+Traverse URLs until encountering a target domain.
+We may want to do this if a site makes an effort to counter scraping or raises "connection reset" errors.
+
+Returns two values: final request object, an error string, and listing of traversed URLs.
+If it encounters targetDomain, the final request object will be None. Otherwise, it will contain the final request.
+If any request errors, the error's string representation will be passed back.
+"""
+def traverseUrls(nextUrl,targetDomain,targetWhitelist,hist=[]):
+	# Parse URL.
+	urlParsed = urlparse(nextUrl)
+	# If the destination url is our target, return the list leading up to it.
+	if targetDomain is not None and (urlParsed.netloc == targetDomain or urlParsed.netloc[-len(targetDomain)-1:] == '.' + targetDomain) and urlParsed.netloc not in targetWhitelist:
+		return None, None, hist+[nextUrl]
+	# If it is not, request the URL without redirects.
+	try:
+		singleRequest = requests.head(nextUrl, allow_redirects=False)
+	except:
+		# We can experience connection errors for various reasons.
+		# If we encounter one, append the URL to the end and move on.
+		e = sys.exc_info()[0]
+		return None, str(e), hist+[nextUrl]
+	# Look for a location in the header. If none, return just the url.
+	if 'location' not in singleRequest.headers:
+		return singleRequest, None, hist+[nextUrl]
+	# To avoid loops, verify if address has been traversed before.
+	if singleRequest.headers['location'] in hist:
+		return None, 'Loop encountered', hist+[nextUrl]
+	# Finally, if all is well, continue recursive operations.
+	return traverseUrls(singleRequest.headers['location'],targetDomain,targetWhitelist,hist+[nextUrl])
+
+
 
 ##### Get URLs
 
@@ -88,6 +128,7 @@ urlsRetrieved = 0
 fbUrlsRetrieved = 0
 twUrlsRetrieved = 0
 postsSansUrl = 0
+urlsScraped = 0
 
 # Validation.
 if network not in ['facebook','twitter']:
@@ -136,49 +177,72 @@ for (i, post) in enumerate(posts):
 		if url in urls:
 			urlsSkipped += 1
 			break
-		# Make request.
-		try:
-			urlRequest = requests.get(url)
-		except requests.exceptions.ConnectionError, e:
-			# Fow now, handle severe exceptions by breaking fully.
-			print 'Request for URL "%s" caused an error:' % url
-			print '\t',e
-			print 'Breaking all pulls for @%s.' % sn
-			criticalError = True
-			break
-		except requests.exceptions.TooManyRedirects, e:
-			# Some links show too many redirects.
-			# We don't have any way to denote those now so that we don't check again.
-			# Just skip them for now.
-			print 'Request for URL "%s" caused an "too many redirects" error:' % url
-			print '\t',e
-			print 'Skipping.'
-			break
 
-		# Now we have our data. Gather information about the URL(s) themselves.
-		# Lots of this could be derived later but storing it will make for easier searching.
+		# Container for URL data. How we fill it depends on scrapeContent.
 		urlData = dict()
-		urlData['history'] = [h.url for h in urlRequest.history] + [urlRequest.url]
+		# Handle base content cases so we don't need to set "defaults" everywhere.
+		urlData['errorText'] = None
+		urlData['history'] = []
+		urlData['statusCode'] = None
+		urlData['scraped'] = False
+		content = None
+
+		if scrapeContent:
+			# We will scrape content. Just use a regular request.get() call; we don't need to worry about stopping before the end.
+			# Make request.
+			try:
+				# Make request.
+				urlRequest = requests.get(url)
+				# Now we have our data. Gather information about the URL(s) themselves.
+				# Lots of this could be derived later but storing it will make for easier searching.
+				urlData['history'] = [h.url for h in urlRequest.history] + [urlRequest.url]
+				# Log status codes. We may use these to detect non-200 results later for diagnostics.
+				urlData['statusCode'] = urlRequest.status_code
+				# Note that we scraped.
+				urlData['scraped'] = True
+				# Save content.
+				content = urlRequest.text.encode('utf8')
+			except:
+				urlData['history'] = [url]
+				# Get any errors. Alter the object accordingly.
+				e = sys.exc_info()[0]
+				urlData['errorText'] = str(e)
+		else:
+			# We are not scraping content. Use a traverseUrls() call in order to avoid triggering a "connection reset" error.
+			# Get history.
+			finalRequest, errorText, urlsTraversed = traverseUrls(url,targetDomain,targetWhitelist)
+			urlData['history'] = urlsTraversed
+
+			# Special behavior if we encountered any content. Note status code.
+			if finalRequest is not None:
+				urlData['statusCode'] = finalRequest.status_code
+			# Handle any errors.
+			if errorText is not None:
+				urlData['errorText'] = errorText
+
+		# Store MD5.
 		urlMd5 = md5(url).hexdigest()
 		urlData['md5'] = urlMd5
-		# Store particular things about the end URL.
-		urlParsed = urlparse(urlRequest.url)
-		urlData['endUrl'] = dict({
-			'url': urlRequest.url,
+
+		# Parse final URL.
+		urlParsed = urlparse(urlData['history'][-1])
+		urlData['endUrl'] = {
+			'url': urlData['history'][-1],
 			'scheme': urlParsed.scheme,
 			'netloc': urlParsed.netloc,
 			'path': urlParsed.path,
 			'query': urlParsed.query,
 			'fragment': urlParsed.fragment
-		})
-		# Log status codes. We may use these to detect non-200 results later for diagnostics.
-		urlData['statusCode'] = urlRequest.status_code
+		}
+
+		# Save content if we have it.
+		if content is not None:
+			with open(contentDirectory+urlMd5+'.html','w') as f:
+				f.write(content)
+			urlsScraped += 1
+
 		# Store in main URLs dictionary.
 		urls[url] = urlData
-
-		# Save content to a file.
-		with open(contentDirectory+urlMd5+'.html','w') as f:
-			f.write(urlRequest.text.encode('utf8'))
 
 		# Statistics.
 		urlsRetrieved += 1
@@ -208,4 +272,5 @@ print 'URLs skipped:        %d' % urlsSkipped
 print 'URLs retrieved:      %d' % urlsRetrieved
 print '      Facebook:      %d' % fbUrlsRetrieved
 print '       Twitter:      %d' % twUrlsRetrieved
+print 'URLs scraped:        %d' % urlsScraped
 print 'Posts without a URL: %d' % postsSansUrl
