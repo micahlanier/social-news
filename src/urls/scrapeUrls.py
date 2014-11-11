@@ -29,6 +29,9 @@ Setting this value is more art than science, so good luck.
 # This script is going to take a long time to run, so we want to store URLs in chunks in case anything goes wrong.
 incrementalUrlsToStore = 25
 
+# Timeout for hanging URLs.
+timeoutSeconds = 10.0
+
 
 
 ##### Main Setup
@@ -95,28 +98,48 @@ Returns two values: final request object, an error string, and listing of traver
 If it encounters targetDomain, the final request object will be None. Otherwise, it will contain the final request.
 If any request errors, the error's string representation will be passed back.
 """
-def traverseUrls(nextUrl,targetDomain,targetWhitelist,hist=[]):
-	# Parse URL.
-	urlParsed = urlparse(nextUrl)
-	# If the destination url is our target, return the list leading up to it.
-	if targetDomain is not None and (urlParsed.netloc == targetDomain or urlParsed.netloc[-len(targetDomain)-1:] == '.' + targetDomain) and urlParsed.netloc not in targetWhitelist:
-		return None, None, hist+[nextUrl]
-	# If it is not, request the URL without redirects.
-	try:
-		singleRequest = requests.head(nextUrl, allow_redirects=False)
-	except:
-		# We can experience connection errors for various reasons.
-		# If we encounter one, append the URL to the end and move on.
-		e = sys.exc_info()[0]
-		return None, str(e), hist+[nextUrl]
-	# Look for a location in the header. If none, return just the url.
-	if 'location' not in singleRequest.headers:
-		return singleRequest, None, hist+[nextUrl]
-	# To avoid loops, verify if address has been traversed before.
-	if singleRequest.headers['location'] in hist:
-		return None, 'Loop encountered', hist+[nextUrl]
-	# Finally, if all is well, continue recursive operations.
-	return traverseUrls(singleRequest.headers['location'],targetDomain,targetWhitelist,hist+[nextUrl])
+def traverseUrls(firstUrl,targetDomain,targetWhitelist):
+	# Keep track of history.
+	hist = [];
+	# Other return objects to keep.
+	errorText = None
+	lastRequest = None
+
+	# Keep looping until we no longer have a URL to traverse.
+	# We may manually break the loop inside if we want to exit immediately.
+	nextUrl = firstUrl
+	while nextUrl is not None:
+		# Append the URL to history.
+		hist += [nextUrl]
+		# Parse URL.
+		urlParsed = urlparse(nextUrl)
+		# If the destination url is our target, return the list leading up to it.
+		if targetDomain is not None and (urlParsed.netloc == targetDomain or urlParsed.netloc[-len(targetDomain)-1:] == '.' + targetDomain) and urlParsed.netloc != targetWhitelist:
+			break
+		# If it is not, request the URL without redirects.
+		try:
+			singleRequest = requests.head(nextUrl, allow_redirects=False, timeout=timeoutSeconds)
+		except:
+			# We can experience connection errors for various reasons.
+			# If we encounter one, append the URL to the end and move on.
+			e = sys.exc_info()[0]
+			errorText = str(e)
+			break
+		# We have a request. Look for a location in the header. If none, we've reached the end and can return.
+		if 'location' not in singleRequest.headers:
+			# Store our request as the last request.
+			lastRequest = singleRequest
+			break
+		# Set the next URL to traverse.
+		nextUrl = singleRequest.headers['location']
+		# To avoid loops, verify if address has been traversed before.
+		if nextUrl in hist:
+			errorText = 'Loop encountered'
+			break
+		
+	# Return.
+	return lastRequest, errorText, hist
+
 
 
 
@@ -178,6 +201,8 @@ for (i, post) in enumerate(posts):
 			urlsSkipped += 1
 			break
 
+		print 'Checking URL: %s' % url
+
 		# Container for URL data. How we fill it depends on scrapeContent.
 		urlData = dict()
 		# Handle base content cases so we don't need to set "defaults" everywhere.
@@ -192,7 +217,7 @@ for (i, post) in enumerate(posts):
 			# Make request.
 			try:
 				# Make request.
-				urlRequest = requests.get(url)
+				urlRequest = requests.get(url, timeout=timeoutSeconds)
 				# Now we have our data. Gather information about the URL(s) themselves.
 				# Lots of this could be derived later but storing it will make for easier searching.
 				urlData['history'] = [h.url for h in urlRequest.history] + [urlRequest.url]
