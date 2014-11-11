@@ -1,0 +1,152 @@
+{
+	"nytimes": {
+		"name": "NY Times",
+		"category": "Newspaper",
+		"twitter": "nytimes",
+		"facebook": "nytimes"
+	},
+	"wsj": {
+		"name": "Wall Street Journal",
+		"category": "Newspaper",
+		"twitter": "wsj",
+		"facebook": "wsj"
+	},
+	"washingtonpost": {
+		"name": "Washington Post",
+		"category": "Newspaper",
+		"twitter": "washingtonpost",
+		"facebook": "washingtonpost"
+	},
+	"bostonglobe": {
+		"name": "Boston Globe",
+		"category": "Newspaper",
+		"twitter": "bostonglobe",
+		"facebook": "globe"
+	},
+	"latimes": {
+		"name": "LA Times",
+		"category": "Newspaper",
+		"twitter": "latimes",
+		"facebook": "latimes"
+	},
+	"usatoday": {
+		"name": "USA Today",
+		"category": "Newspaper",
+		"twitter": "usatoday",
+		"facebook": "usatoday"
+	},
+	"cnn": {
+		"name": "CNN",
+		"category": "Cable",
+		"twitter": "cnn",
+		"facebook": "cnn"
+	},
+	"foxnews": {
+		"name": "Fox News",
+		"category": "Cable",
+		"twitter": "foxnews",
+		"facebook": "foxnews"
+	},
+	"msnbc": {
+		"name": "MSNBC",
+		"category": "Cable",
+		"twitter": "msnbc",
+		"facebook": "msnbc"
+	},
+	"abcnews": {
+		"name": "ABC News",
+		"category": "Broadcast",
+		"twitter": "abc",
+		"facebook": "abcnews"
+	},
+	"cbsnews": {
+		"name": "CBS News",
+		"category": "Broadcast",
+		"twitter": "cbsnews",
+		"facebook": "cbsnews"
+	},
+	"nbcnews": {
+		"name": "NBC News",
+		"category": "Broadcast",
+		"twitter": "nbcnews",
+		"facebook": "nbcnews"
+	},
+	"ap": {
+		"name": "Associated Press",
+		"category": "Wire",
+		"twitter": "ap",
+		"facebook": "apnews"
+	},
+	"afp": {
+		"name": "AFP",
+		"category": "Wire",
+		"twitter": "afp",
+		"facebook": "afpnewsenglish"
+	},
+	"reuters": {
+		"name": "Reuters",
+		"category": "Wire",
+		"twitter": "reuters",
+		"facebook": "reuters"
+	},
+	"time": {
+		"name": "Time",
+		"category": "Newsweekly",
+		"twitter": "time",
+		"facebook": "time"
+	},
+	"newsweek": {
+		"name": "Newsweek",
+		"category": "Newsweekly",
+		"twitter": "newsweek",
+		"facebook": "newsweek"
+	},
+	"thedailybeast": {
+		"name": "The Daily Beast",
+		"category": "Online",
+		"twitter": "thedailybeast",
+		"facebook": "thedailybeast"
+	},
+	"huffingtonpost": {
+		"name": "Huffington Post",
+		"category": "Online",
+		"twitter": "huffingtonpost",
+		"facebook": "huffingtonpost"
+	},
+	"slate": {
+		"name": "Slate",
+		"category": "Online",
+		"twitter": "slate",
+		"facebook": "slate"
+	},
+	"bbcworld": {
+		"name": "BBC",
+		"category": "International",
+		"twitter": "bbcworld",
+		"facebook": "bbcworldnews"
+	},
+	"dailymail": {
+		"name": "The Daily Mail",
+		"category": "International",
+		"twitter": "mailonline",
+		"facebook": "dailymail"
+	},
+	"theguardian": {
+		"name": "The Guardian",
+		"category": "International",
+		"twitter": "guardian",
+		"facebook": "theguardian"
+	},
+	"yahoonews": {
+		"name": "Yahoo News",
+		"category": "Aggregator",
+		"twitter": "yahoonews",
+		"facebook": "yahoonews"
+	},
+	"npr": {
+		"name": "NPR News",
+		"category": "Other",
+		"twitter": "nprnews",
+		"facebook": "npr"
+	},
+}
