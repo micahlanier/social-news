@@ -201,8 +201,6 @@ for (i, post) in enumerate(posts):
 			urlsSkipped += 1
 			break
 
-		print 'Checking URL: %s' % url
-
 		# Container for URL data. How we fill it depends on scrapeContent.
 		urlData = dict()
 		# Handle base content cases so we don't need to set "defaults" everywhere.
