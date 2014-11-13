@@ -244,7 +244,7 @@ for (i, post) in enumerate(posts):
 				urlData['errorText'] = errorText
 
 		# Store MD5.
-		urlMd5 = md5(url).hexdigest()
+		urlMd5 = md5(url.encode('utf8')).hexdigest()
 		urlData['md5'] = urlMd5
 
 		# Parse final URL.
