@@ -2,10 +2,11 @@
 
 """
 
-This script will pull as many recent tweets as possible from given usernames and dump them to a timestamped file.
+This script will pull as many recent tweets as possible from given organizations and dump them to a timestamped file.
 If we pull tweets over time, this will allow us to arrange pulls in order and consolidate them into a master file.
 
-It should not be too hard on the API rate limit to perform this process with multiple screen names.
+We have encountered rate limit failures around 17 consecutive organizations.
+Consider dividing the organization list in two and fetching both halves over time.
 If it fails, wait 15 minutes and try again. In the future, we can think about cycling through API keys.
 
 Relevant Twitter API documentation:
@@ -15,8 +16,8 @@ Relevant Twitter API documentation:
 
 ##### Configuration
 
-# List of screen names to fetch.
-screenNames   = ['huffingtonpost','nytimes','afp','ap','bbcworld','bostonglobe','cnn','foxnews','guardian','latimes','mailonline','msnbc','newsweek','nprnews','reuters','slate','thedailybeast','time','usatoday','washingtonpost','wsj','yahoonews','abc','cbsnews','nbcnews']
+# List of organizations to fetch. Either a list or "all".
+orgs = 'all'
 
 
 
@@ -45,13 +46,22 @@ twitter = Twython(twitterSettings['apiKey'], access_token=twitterSettings['acces
 # Default number of tweets to grab per request.
 tweetsPerRequest = 200
 
+# Organization setup.
+allOrgs = json.load(open('../../conf/organizations.json'))
+if (type(orgs) == type('str')):
+	orgs = allOrgs.keys()
+relevantOrgs = dict((k, allOrgs[k]) for k in orgs);
+
 
 
 ##### Get Tweets
 
-# Iterate over screen names.
-for sn in screenNames:
-	print 'Retrieving tweets for @%s.' % sn
+# Iterate over organizations.
+for org, orgData in relevantOrgs.iteritems():
+	# Get SN.
+	sn = orgData['twitter']
+
+	print 'Retrieving tweets for organization "%s" (@%s).' % (org,sn)
 
 	# Set up container for tweets.
 	tweets = []
@@ -60,7 +70,7 @@ for sn in screenNames:
 	minTweetDate = None
 	maxTweetDate = None
 	# Set up folder if it doesn't exist.
-	snDirectory = rawTweetsDirectory + sn + '/'
+	snDirectory = rawTweetsDirectory + org + '/'
 	if not os.path.exists(snDirectory):
 		os.makedirs(snDirectory)
 
@@ -87,10 +97,10 @@ for sn in screenNames:
 		print 'Retrieved %d tweets (%d overall).' % (len(currentTweets), len(tweets))
 
 	# Dump to file.
-	filename = rawTweetsDirectory + sn + '/' + timestampFilename
+	filename = rawTweetsDirectory + org + '/' + timestampFilename
 	json.dump(tweets, open(filename,'w'))
 
 	# Status.
-	print 'Done retrieving tweets for @%s.' % sn
+	print 'Done retrieving tweets for organization "%s" (@%s).' % (org,sn)
 	print 'Read %d tweets total.' % len(tweets)
 	print 'Dates: %s to %s' % (str(minTweetDate),str(maxTweetDate))

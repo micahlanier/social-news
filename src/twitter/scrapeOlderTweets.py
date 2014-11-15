@@ -14,8 +14,8 @@ Expect this process to be slooow.
 # We'll use these libraries immediately.
 import dateutil.parser
 
-# Enter a single screen name to scrape.
-sn = 'nytimes'
+# Enter a single organization scrape.
+org = 'nytimes'
 
 # Date to go back to.
 until = dateutil.parser.parse('2014/10/01')
@@ -42,19 +42,6 @@ from twython import Twython
 # until = pytz.utc.localize(until)
 until = until.replace(tzinfo=dateutil.tz.tzutc())
 
-# Data directory.
-consolidatedTweetsDirectory = '../../../data/twitter/consolidated/%s/' % sn
-if not os.path.exists(consolidatedTweetsDirectory):
-	raise Exception('No consolidated tweets for SN @%s.' % sn)
-
-# Data directory.
-rawTweetsDirectory = '../../../data/twitter/raw/%s/' % sn
-# Get timestamp of current run.
-timestampFilename = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S') + '.json'
-
-# Base search URL. Can just append an ID after this.
-baseSearchUrl = 'https://twitter.com/search?f=realtime&q=from%%3A%s%%20max_id%%3A' % sn
-
 # Unclear how time zones returned work. But this seems to get us what we're looking for.
 # eastern = pytz.timezone('US/Eastern')
 
@@ -68,6 +55,23 @@ twitterSettings = json.load(open(apiConfigPath))
 twitter = Twython(twitterSettings['apiKey'], access_token=twitterSettings['accessToken'])
 # Wait time. Ensure we don't run afoul of rate limits.
 secondsToWait = 6
+
+# Organization/SN setup.
+allOrgs = json.load(open('../../conf/organizations.json'))
+sn = allOrgs[org]
+
+# Data directory.
+consolidatedTweetsDirectory = '../../../data/twitter/consolidated/%s/' % org
+if not os.path.exists(consolidatedTweetsDirectory):
+	raise Exception('No consolidated tweets for organization "%s" (@%s).' % (org,sn))
+
+# Data directory.
+rawTweetsDirectory = '../../../data/twitter/raw/%s/' % org
+# Get timestamp of current run.
+timestampFilename = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S') + '.json'
+
+# Base search URL. Can just append an ID after this.
+baseSearchUrl = 'https://twitter.com/search?f=realtime&q=from%%3A%s%%20max_id%%3A' % sn
 
 
 ### Find Starting Point
@@ -84,7 +88,7 @@ for tweet in consolidatedTweets:
 	minTweetId = min([tId for tId in [minTweetId, tweet['id']] if tId is not None])
 
 # Status.
-print 'Found minimum tweet ID for @%s: %d' % (sn,minTweetId)
+print 'Found minimum tweet ID for organization "%s" (@%s): %d' % (org,sn,minTweetId)
 print 'Will start search at %d - 1' % minTweetId
 
 
@@ -155,7 +159,7 @@ while True:
 			break
 
 # Status.
-print 'Done retrieving tweets for @%s.' % sn
+print 'Done retrieving tweets for organization "%s" (@%s).' % (org,sn))
 print 'Read %d tweets total.' % totalTweets
 print 'Dates: %s to %s' % (str(minTweetDate),str(maxTweetDate))
 print 'Oldest ID: %d' % minTweetId

@@ -10,8 +10,8 @@ This script will consolidate raw tweet files into one large JSON file (timestamp
 
 # Edit things here to your liking. But please don't commit them needlessly.
 
-# Set to string "all" to summarize all consolidated tweets; otherwise, use a list.
-screenNames = 'all' # screenNames = ['nytimes']
+# Organizations to consolidate. Either a list or "all".
+orgs = 'all'
 
 
 
@@ -29,17 +29,22 @@ consolidatedTweetsDirectory = '../../../data/twitter/consolidated/'
 # Get timestamp of current run.
 timestampFilename = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 
-# Traverse all SNs if set to do so.
-if type(screenNames) == type('str'):
-	screenNames = [sn for sn in os.listdir(rawTweetsDirectory) if sn != '.DS_Store']
+# Organization setup.
+allOrgs = json.load(open('../../conf/organizations.json'))
+if (type(orgs) == type('str')):
+	orgs = allOrgs.keys()
+relevantOrgs = dict((k, allOrgs[k]) for k in orgs);
 
 
 
 ##### Get Tweets
 
-# Iterate over screen names.
-for sn in screenNames:
-	print '\nConsolidating tweets for @%s.' % sn
+# Iterate over organizations.
+for org, orgData in relevantOrgs.iteritems():
+	# Get SN.
+	sn = orgData['twitter']
+
+	print '\nConsolidating tweets for organization "%s" (@%s).' % (org,sn)
 
 	# We're going to hold tweets in one dict.
 	# If we end up with a lot of them we may need to be more careful here.
@@ -51,14 +56,14 @@ for sn in screenNames:
 	maxTweetDate = None
 
 	# Get list of files. Remove junk in the process.
-	rawTweetsFiles = [rtf for rtf in os.listdir(rawTweetsDirectory + sn + '/') if rtf[-5:] == '.json']
+	rawTweetsFiles = [rtf for rtf in os.listdir(rawTweetsDirectory + org + '/') if rtf[-5:] == '.json']
 	# Print status.
 	print 'Files found: %d' % len(rawTweetsFiles)
 
 	# Iterate over files.
 	for rawTweetFile in rawTweetsFiles:
 		# Read in JSON.
-		filepath = rawTweetsDirectory + sn + '/' + rawTweetFile
+		filepath = rawTweetsDirectory + org + '/' + rawTweetFile
 		rawTweets = json.load(open(filepath))
 		# Iterate over tweets.
 		for rawTweet in rawTweets:
@@ -73,11 +78,11 @@ for sn in screenNames:
 		tweetsRead += len(rawTweets)
 
 	# Dump to file.
-	filename = consolidatedTweetsDirectory + '/' + sn + '-' + timestampFilename + '.json'
+	filename = consolidatedTweetsDirectory + '/' + org + '-' + timestampFilename + '.json'
 	json.dump(consolidatedTweets.values(), open(filename,'w'))
 
 	# Status.
-	print 'Done consolidating tweets for @%s.' % sn
+	print 'Done consolidating tweets for organization "%s" (@%s).' % (org,sn)
 	print 'Read %d tweets total.' % tweetsRead
 	print 'Consolidated to %d tweets.' % len(consolidatedTweets)
 	print 'Dates: %s to %s' % (str(minTweetDate),str(maxTweetDate))

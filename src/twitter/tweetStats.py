@@ -10,8 +10,8 @@ This script outputs statistics about consolidated tweets.
 
 # Edit things here to your liking. But please don't commit them needlessly.
 
-# Set to string "all" to summarize all consolidated tweets; otherwise, use a list.
-screenNames = 'all' # screenNames = ['nytimes'] 
+# Organizations for which to generate statistics. Either a list or "all".
+orgs = 'all'
 
 
 
@@ -25,9 +25,12 @@ import os
 
 # Data directory.
 consolidatedTweetsDirectory = '../../../data/twitter/consolidated/'
-# Traverse all SNs if set to do so.
-if type(screenNames) == type('str'):
-	screenNames = [cFile[:cFile.find('-')] for cFile in os.listdir(consolidatedTweetsDirectory) if cFile != '.DS_Store']
+
+# Organization setup.
+allOrgs = json.load(open('../../conf/organizations.json'))
+if (type(orgs) == type('str')):
+	orgs = allOrgs.keys()
+relevantOrgs = dict((k, allOrgs[k]) for k in orgs);
 
 
 
@@ -40,12 +43,15 @@ maxMaxTweetDate = None
 minMinTweetDate = None
 maxMinTweetDate = None
 
-# Iterate over screen names.
-for sn in screenNames:
-	print '\n@%s:' % sn
+# Iterate over organizations.
+for org, orgData in relevantOrgs.iteritems():
+	# Get SN.
+	sn = orgData['twitter']
+
+	print '\n%s (@%s):' % (org,sn)
 
 	# Get consolidated tweet files; get the most recent (file -1).
-	tweetFile = consolidatedTweetsDirectory + [f for f in os.listdir(consolidatedTweetsDirectory) if f.find(sn) == 0 and f[-5:] == '.json'][-1]
+	tweetFile = consolidatedTweetsDirectory + [f for f in os.listdir(consolidatedTweetsDirectory) if f.find(org) == 0 and f[-5:] == '.json'][-1]
 
 	# Load tweets.
 	tweets = json.load(open(tweetFile))
@@ -86,7 +92,7 @@ for sn in screenNames:
 
 
 # General stats if we've examined more than one account.
-if len(screenNames) > 1:
+if len(relevantOrgs) > 1:
 	print '\nOverall Statistics:'
 	print '\tTweet count: %d' % totalTweets
 	print '\tMax Dates:'
