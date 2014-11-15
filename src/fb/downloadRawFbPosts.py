@@ -15,12 +15,12 @@ If we pull posts over time, this will allow us to arrange pulls in order and con
 import datetime as dt
 import dateutil.parser
 
-# Accounts to read from.
-accounts   = ['nytimes','wsj','washingtonpost','globe','latimes','usatoday']
+# List of organizations to fetch. Either a list or "all".
+orgs = 'all'
 # Upper limit of date.
-maxDate = dt.datetime(2014,11,01,tzinfo=dateutil.tz.tzutc()) #dt.datetime.utcnow()
+maxDate = dt.datetime(2014,11,10,tzinfo=dateutil.tz.tzutc()) #dt.datetime.utcnow()
 # Lower limit of date.
-minDate = dt.datetime(2014, 9,01,tzinfo=dateutil.tz.tzutc())
+minDate = dt.datetime(2014,10,30,tzinfo=dateutil.tz.tzutc())
 # Facebook is not as explicit as Twitter about limiting. Set this as needed if you run into any issues.
 postLimit = 75
 
@@ -56,6 +56,12 @@ oneSecond = dt.timedelta(seconds=1)
 # Sleep interval for transient errors.
 sleepTimeSeconds = 4
 
+# Organization setup.
+allOrgs = json.load(open('../../conf/organizations.json'))
+if (type(orgs) == type('str')):
+	orgs = allOrgs.keys()
+relevantOrgs = dict((k, allOrgs[k]) for k in orgs)
+
 
 
 
@@ -80,12 +86,15 @@ def facebookGet(path, accessToken, parameters, version = '2.1'):
 
 ##### Get Facebook Posts
 
-# Iterate over screen names.
-for acct in accounts:
-	print 'Retrieving posts for @%s.' % acct
+# Iterate over organizations.
+for org, orgData in relevantOrgs.iteritems():
+	# Get account.
+	acct = orgData['facebook']
+
+	print 'Retrieving posts for organization "%s" (@%s).' % (org,acct)
 
 	# Set up folder if it doesn't exist.
-	acctDirectory = rawPostsDirectory + acct + '/'
+	acctDirectory = rawPostsDirectory + org + '/'
 	if not os.path.exists(acctDirectory):
 		os.makedirs(acctDirectory)
 
@@ -156,7 +165,7 @@ for acct in accounts:
 	maxDateRetrieved = dateutil.parser.parse(posts[0]['created_time'])
 
 	# Status.
-	print 'Done retrieving posts for @%s.' % acct
+	print 'Done retrieving posts for "%s" (@%s).' % (org,acct)
 	print 'Read %d posts total.' % len(posts)
 	print 'Dates: %s to %s' % (str(minDateRetrieved),str(maxDateRetrieved))
 	print 'Wrote output to: %s' % filename

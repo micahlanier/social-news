@@ -11,8 +11,8 @@ Note that post IDs are string-based and may not be properly interpreted as order
 
 # Edit things here to your liking. But please don't commit them needlessly.
 
-# Set to string "all" to summarize all consolidated posts; otherwise, use a list.
-accounts = 'all' # accounts = ['nytimes'] 
+# Organizations for which to generate statistics. Either a list or "all".
+orgs = 'all'
 
 
 
@@ -26,9 +26,12 @@ import os
 
 # Data directory.
 consolidatedPostsDirectory = '../../../data/facebook/consolidated/'
-# Traverse all accounts if set to do so.
-if type(accounts) == type('str'):
-	accounts = [cFile[:cFile.find('-')] for cFile in os.listdir(consolidatedPostsDirectory) if cFile != '.DS_Store']
+
+# Organization setup.
+allOrgs = json.load(open('../../conf/organizations.json'))
+if (type(orgs) == type('str')):
+	orgs = allOrgs.keys()
+relevantOrgs = dict((k, allOrgs[k]) for k in orgs);
 
 
 
@@ -41,12 +44,15 @@ maxMaxPostDate = None
 minMinPostDate = None
 maxMinPostDate = None
 
-# Iterate over accounts.
-for acct in accounts:
-	print '\n@%s:' % acct
+# Iterate over organizations.
+for org, orgData in relevantOrgs.iteritems():
+	# Get SN.
+	acct = orgData['facebook']
+
+	print '\n%s (@%s):' % (org,acct)
 
 	# Get consolidated post files; get the most recent (file -1).
-	postFile = consolidatedPostsDirectory + [f for f in os.listdir(consolidatedPostsDirectory) if f.find(acct) == 0 and f[-5:] == '.json'][-1]
+	postFile = consolidatedPostsDirectory + [f for f in os.listdir(consolidatedPostsDirectory) if f.find(org) == 0 and f[-5:] == '.json'][-1]
 
 	# Load posts.
 	posts = json.load(open(postFile))
@@ -86,7 +92,7 @@ for acct in accounts:
 	maxMinPostDate = max([d for d in [maxMinPostDate, minPostDate] if d is not None])
 
 # General stats if we've examined more than one account.
-if len(accounts) > 1:
+if len(relevantOrgs) > 1:
 	print '\nOverall Statistics:'
 	print '\tPost count: %d' % totalPosts
 	print '\tMax Dates:'
