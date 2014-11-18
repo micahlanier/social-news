@@ -14,8 +14,8 @@ The best solution is to parallelize execution. But parallelization in this scrip
 To run, execute with the following parameters:
 	python scrapeUrls.py [network] [username] [delay] [scrapeContent]
 Parameters:
-	* organization: organization name for the given network
 	* network: one of 'facebook' or 'twitter'
+	* username: account/screen name for the given network
 	* delay: delay in seconds to wait before retrieving subsequent URLs
 	* scrapeContent: 1 to scrape content, 0 to stop before making any request to the final link destination
 
@@ -65,18 +65,16 @@ currTimestamp = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 # Will already fail if insufficient parameters or if they don't follow correct types.
 
 # Set network, screen name, and sleep time based on inputs in sys.argv.
-org = str(sys.argv[1])
-network = str(sys.argv[2])
+network = str(sys.argv[1])
+sn = str(sys.argv[2])
 sleepSeconds = int(sys.argv[3])
 scrapeContent = True if int(sys.argv[4]) else 0
 
-# Get organizational information.
-allOrgs = json.load(open('../../conf/organizations.json'))
-
 # Handle target domains for non-scraping.
 if not scrapeContent:
-	targetDomain = allOrgs[org]['urls']['domain']
-	bitlyUrl = allOrgs[org]['urls']['bitly']
+	nonScrapingData = json.load(open('../../conf/urlTargetDomains.json'))[sn]
+	targetDomain = nonScrapingData['target']
+	targetWhitelist = nonScrapingData['whitelist']
 
 
 
@@ -100,7 +98,7 @@ Returns two values: final request object, an error string, and listing of traver
 If it encounters targetDomain, the final request object will be None. Otherwise, it will contain the final request.
 If any request errors, the error's string representation will be passed back.
 """
-def traverseUrls(firstUrl,targetDomain,bitlyUrl):
+def traverseUrls(firstUrl,targetDomain,targetWhitelist):
 	# Keep track of history.
 	hist = [];
 	# Other return objects to keep.
@@ -116,7 +114,7 @@ def traverseUrls(firstUrl,targetDomain,bitlyUrl):
 		# Parse URL.
 		urlParsed = urlparse(nextUrl)
 		# If the destination url is our target, return the list leading up to it.
-		if targetDomain is not None and (urlParsed.netloc == targetDomain or urlParsed.netloc[-len(targetDomain)-1:] == '.' + targetDomain) and urlParsed.netloc != bitlyUrl:
+		if targetDomain is not None and (urlParsed.netloc == targetDomain or urlParsed.netloc[-len(targetDomain)-1:] == '.' + targetDomain) and urlParsed.netloc != targetWhitelist:
 			break
 		# If it is not, request the URL without redirects.
 		try:
@@ -157,32 +155,32 @@ urlsScraped = 0
 
 # Validation.
 if network not in ['facebook','twitter']:
-	print 'Network "%s" invalid; skipping user %s.' % (network, org)
+	print 'Network "%s" invalid; skipping user %s.' % (network, sn)
 	quit()
 
 # Status.
-print 'Beginning scrape for %s user @%s.' % (network.title(), org)
+print 'Beginning scrape for %s user @%s.' % (network.title(), sn)
 
 # Look for existing URLs.
-orgUrlsFilename = (filePath_urls % (network,org))
-urlsFileExists = os.path.exists(orgUrlsFilename)
+snUrlsFilename = (filePath_urls % (network,sn))
+urlsFileExists = os.path.exists(snUrlsFilename)
 # Create a URL dict if we don't find it.
 urls = dict()
 if urlsFileExists:
 	# URLs file exists. Load it.
-	urls = json.load(open(orgUrlsFilename))
+	urls = json.load(open(snUrlsFilename))
 
 	# Because we're going to be modifying it, create a backup.
-	backupFilename = (dirPath_urlBackups % network) + org + '-' + currTimestamp + '.json'
-	shutil.copyfile(orgUrlsFilename, backupFilename)
+	backupFilename = (dirPath_urlBackups % network) + sn + '-' + currTimestamp + '.json'
+	shutil.copyfile(snUrlsFilename, backupFilename)
 	print 'Backed up URLs file to %s' % '/'.join(backupFilename.split('/')[-2:])
 
 # Get posts. Use the latest file if more than one.
-postsFilename = [f for f in os.listdir(dirPath_consolidated % network) if f.find(org) == 0][-1]
+postsFilename = [f for f in os.listdir(dirPath_consolidated % network) if f.find(sn) == 0][-1]
 posts = json.load(open(dirPath_consolidated % network + '/' + postsFilename))
 
 # Set up content directory path. Create if doesn't exist.
-contentDirectory = dirPath_content % (network, org)
+contentDirectory = dirPath_content % (network, sn)
 if not os.path.exists(contentDirectory):
 	os.makedirs(contentDirectory)
 
@@ -235,7 +233,7 @@ for (i, post) in enumerate(posts):
 		else:
 			# We are not scraping content. Use a traverseUrls() call in order to avoid triggering a "connection reset" error.
 			# Get history.
-			finalRequest, errorText, urlsTraversed = traverseUrls(url,targetDomain,bitlyUrl)
+			finalRequest, errorText, urlsTraversed = traverseUrls(url,targetDomain,targetWhitelist)
 			urlData['history'] = urlsTraversed
 
 			# Special behavior if we encountered any content. Note status code.
@@ -279,7 +277,7 @@ for (i, post) in enumerate(posts):
 		# Dump URLs if we've gotten to that point.
 		if urlsRetrieved % incrementalUrlsToStore == 0:
 			print 'Storing %d URLs.' % incrementalUrlsToStore
-			json.dump(urls, open(orgUrlsFilename,'w'))
+			json.dump(urls, open(snUrlsFilename,'w'))
 
 		# Wait, if we want to.
 		time.sleep(sleepSeconds)
@@ -289,10 +287,10 @@ for (i, post) in enumerate(posts):
 		break
 
 # Store any last URLs for this user.
-json.dump(urls, open(orgUrlsFilename,'w'))
+json.dump(urls, open(snUrlsFilename,'w'))
 
 # Status.
-print 'Finished scrape for %s user @%s.' % (network.title(), org)
+print 'Finished scrape for %s user @%s.' % (network.title(), sn)
 print 'URLs skipped:        %d' % urlsSkipped
 print 'URLs retrieved:      %d' % urlsRetrieved
 print '      Facebook:      %d' % fbUrlsRetrieved
