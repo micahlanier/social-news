@@ -19,8 +19,8 @@ Parameters:
 	* delay: delay in seconds to wait before retrieving subsequent URLs
 	* scrapeContent: 1 to scrape content, 0 to stop before making any request to the final link destination
 
-The last parameter is complicated. Some hosts are fine with 1 or two seconds delay (e.g., nytimes). Others need 4+ seconds (cnn).
-Setting this value is more art than science, so good luck.
+Scraping is complicated. Some hosts are fine with 1 or two seconds delay (e.g., nytimes). Others need 4+ seconds (cnn).
+Setting delays for this is more art than science, so good luck.
 
 """
 
