@@ -6,7 +6,7 @@
 		"facebook": "nytimes",
 		"urls": {
 			"domain": "nytimes.com",
-			"bitly": "nytimes.com"
+			"bitly": "nyti.ms"
 		}
 	},
 	"wsj": {
@@ -16,7 +16,7 @@
 		"facebook": "wsj",
 		"urls": {
 			"domain": "wsj.com",
-			"bitly": "on.wsj.comn"
+			"bitly": "on.wsj.com"
 		}
 	},
 	"washingtonpost": {
