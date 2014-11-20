@@ -2,25 +2,7 @@
 
 """
 
-This script scrapes URLs from posts and tweets. See /doc/URLs.txt for information on how it works and how it stores data between runs.
-At a high level, it begins by injesting all specified posts/tweets, and identifies the links therein.
-Any that have already been scraped are ignored. We may eventually need a system for fixing bad results.
-Any that have not been scraped are called with the requests module. For successful calls, we log ALL URLs traversed (just in case we need them).
-We also dump request text to a file named using an MD5 hash of the final URL minus any query string.
-
-Note that this script contains little inline configuration. URL scraping takes a while because we need to add delays so as to not cause 54 errors.
-The best solution is to parallelize execution. But parallelization in this script is a pain, so just do it by running the script several times simultaneously.
-
-To run, execute with the following parameters:
-	python scrapeUrls.py [network] [username] [delay] [scrapeContent]
-Parameters:
-	* organization: organization name for the given network
-	* network: one of 'facebook' or 'twitter'
-	* delay: delay in seconds to wait before retrieving subsequent URLs
-	* scrapeContent: 1 to scrape content, 0 to stop before making any request to the final link destination
-
-Scraping is complicated. Some hosts are fine with 1 or two seconds delay (e.g., nytimes). Others need 4+ seconds (cnn).
-Setting delays for this is more art than science, so good luck.
+TODO
 
 """
 
