@@ -42,11 +42,15 @@ import json
 from hashlib import md5
 import numpy as np
 import os
+import re
 import requests
 import shutil
 import sys
 import time
 from urlparse import urlparse
+
+# Our own custom URL parsing code for Facebook.
+# import socialUrlUtils
 
 # Data directories.
 dirPath_consolidated = '../../../data/%s/consolidated/'
@@ -77,6 +81,7 @@ allOrgs = json.load(open('../../conf/organizations.json'))
 if not scrapeContent:
 	targetDomain = allOrgs[org]['urls']['domain']
 	bitlyUrl = allOrgs[org]['urls']['bitly']
+	stillTraversePattern = allOrgs[org]['urls']['stillTraverse']
 
 
 
@@ -100,7 +105,7 @@ Returns two values: final request object, an error string, and listing of traver
 If it encounters targetDomain, the final request object will be None. Otherwise, it will contain the final request.
 If any request errors, the error's string representation will be passed back.
 """
-def traverseUrls(firstUrl,targetDomain,bitlyUrl):
+def traverseUrls(firstUrl, targetDomain, stillTraversePattern, bitlyUrl):
 	# Keep track of history.
 	hist = [];
 	# Other return objects to keep.
@@ -116,7 +121,15 @@ def traverseUrls(firstUrl,targetDomain,bitlyUrl):
 		# Parse URL.
 		urlParsed = urlparse(nextUrl)
 		# If the destination url is our target, return the list leading up to it.
-		if targetDomain is not None and (urlParsed.netloc == targetDomain or urlParsed.netloc[-len(targetDomain)-1:] == '.' + targetDomain) and urlParsed.netloc != bitlyUrl:
+		# We test a LOT of conditions here. Break and return if the following is true:
+		# 	The domain is indeed the "target" domain (e.g., nytimes.com).
+		# 	The domain is not part of a bitly link (handles cases like the on.wsj.com bitly domain).
+		#	The domain does not match an internal redirection page (handles cases like http://www.theguardian.com/p/3p6jv/tw).
+		if (
+				targetDomain is not None and (urlParsed.netloc == targetDomain or urlParsed.netloc[-len(targetDomain)-1:] == '.' + targetDomain)
+			and urlParsed.netloc != bitlyUrl
+			and (stillTraversePattern is None or not re.match(stillTraversePattern,nextUrl))
+		):
 			break
 		# If it is not, request the URL without redirects.
 		try:
@@ -186,10 +199,6 @@ contentDirectory = dirPath_content % (network, org)
 if not os.path.exists(contentDirectory):
 	os.makedirs(contentDirectory)
 
-# Sometimes we encounter severe errors when retrying.
-# It is a pain to break gracefully, so use a boolean to confirm we should keep going.
-criticalError = False
-
 # Traverse all posts, urls.
 # enumerate() pattern is for debugging. It allows us to break after a certain number of posts if necessary.
 for (i, post) in enumerate(posts):
@@ -235,7 +244,7 @@ for (i, post) in enumerate(posts):
 		else:
 			# We are not scraping content. Use a traverseUrls() call in order to avoid triggering a "connection reset" error.
 			# Get history.
-			finalRequest, errorText, urlsTraversed = traverseUrls(url,targetDomain,bitlyUrl)
+			finalRequest, errorText, urlsTraversed = traverseUrls(url,targetDomain,stillTraversePattern,bitlyUrl)
 			urlData['history'] = urlsTraversed
 
 			# Special behavior if we encountered any content. Note status code.
@@ -283,10 +292,6 @@ for (i, post) in enumerate(posts):
 
 		# Wait, if we want to.
 		time.sleep(sleepSeconds)
-
-	# If we encountered a critical error, break.
-	if criticalError:
-		break
 
 # Store any last URLs for this user.
 json.dump(urls, open(orgUrlsFilename,'w'))

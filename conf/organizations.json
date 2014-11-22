@@ -226,7 +226,8 @@
 		"facebook": "theguardian",
 		"urls": {
 			"domain": "theguardian.com",
-			"bitly": "gu.com"
+			"bitly": "gu.com",
+			"stillTraverse": "^http://([^/]+\\.)theguardian.com/p/[a-zA-Z0-9]+/(tw|fb)$"
 		}
 	},
 	"yahoonews": {
