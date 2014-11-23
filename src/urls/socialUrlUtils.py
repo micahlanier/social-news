@@ -24,6 +24,16 @@ def urlIsFacebookPhoto(url):
 	return bool(re.match('^https?://(www\\.)?facebook.com/[a-zA-Z0-9]+/photos/.+$', url))
 
 """
+Detect if a URL is a link to a Facebook video.
+
+Examples:
+	urlIsFacebookPhoto('https://www.facebook.com/video.php?v=10150471411394999') == True
+	urlIsFacebookPhoto('http://bbc.in/fgh543q') == False	
+"""
+def urlIsFacebookVideo(url):
+	return bool(re.match('^https?://(www\\.)?facebook.com/video.php\\?.+$', url))
+
+"""
 TODO
 """
 def urlsInText(t):
