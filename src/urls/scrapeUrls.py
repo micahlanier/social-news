@@ -50,7 +50,7 @@ import time
 from urlparse import urlparse
 
 # Our own custom URL parsing code for Facebook.
-# import socialUrlUtils
+import socialUrlUtils
 
 # Data directories.
 dirPath_consolidated = '../../../data/%s/consolidated/'
@@ -81,7 +81,10 @@ allOrgs = json.load(open('../../conf/organizations.json'))
 if not scrapeContent:
 	targetDomain = allOrgs[org]['urls']['domain']
 	bitlyUrl = allOrgs[org]['urls']['bitly']
-	stillTraversePattern = allOrgs[org]['urls']['stillTraverse']
+	stillTraversePattern = allOrgs[org]['urls']['stillTraverse'] if 'stillTraverse' in allOrgs[org]['urls'] else None
+
+# Any other miscellanea.
+orgName = allOrgs[org]['name']
 
 
 
@@ -91,8 +94,13 @@ if not scrapeContent:
 Return a list of expanded URLs regardless of service. Don't do any cleaning of URLs.
 """
 def associatedUrls(network,post):
-	if network == 'facebook' and 'link' in post:
-		return [post['link']]
+	if network == 'facebook':
+		links = []
+		if 'link' in post:
+			links += [post['link']]
+		if 'message' in post:
+			links += socialUrlUtils.urlsInText(post['message'])
+		return links
 	elif network == 'twitter':
 		return [u['expanded_url'] for u in post['entities']['urls']]
 	return []
@@ -105,9 +113,9 @@ Returns two values: final request object, an error string, and listing of traver
 If it encounters targetDomain, the final request object will be None. Otherwise, it will contain the final request.
 If any request errors, the error's string representation will be passed back.
 """
-def traverseUrls(firstUrl, targetDomain, stillTraversePattern, bitlyUrl):
+def traverseUrls(firstUrl, targetDomain, stillTraversePattern, bitlyUrl, scrape=False):
 	# Keep track of history.
-	hist = [];
+	hist = []
 	# Other return objects to keep.
 	errorText = None
 	lastRequest = None
@@ -120,20 +128,25 @@ def traverseUrls(firstUrl, targetDomain, stillTraversePattern, bitlyUrl):
 		hist += [nextUrl]
 		# Parse URL.
 		urlParsed = urlparse(nextUrl)
-		# If the destination url is our target, return the list leading up to it.
+		# If the destination url is our target and we're not scraping, return the list leading up to it.
 		# We test a LOT of conditions here. Break and return if the following is true:
 		# 	The domain is indeed the "target" domain (e.g., nytimes.com).
 		# 	The domain is not part of a bitly link (handles cases like the on.wsj.com bitly domain).
 		#	The domain does not match an internal redirection page (handles cases like http://www.theguardian.com/p/3p6jv/tw).
 		if (
-				targetDomain is not None and (urlParsed.netloc == targetDomain or urlParsed.netloc[-len(targetDomain)-1:] == '.' + targetDomain)
+				not scrape
+			and	targetDomain is not None and (urlParsed.netloc == targetDomain or urlParsed.netloc[-len(targetDomain)-1:] == '.' + targetDomain)
 			and urlParsed.netloc != bitlyUrl
 			and (stillTraversePattern is None or not re.match(stillTraversePattern,nextUrl))
 		):
 			break
 		# If it is not, request the URL without redirects.
+		# Use a get request if scraping.
 		try:
-			singleRequest = requests.head(nextUrl, allow_redirects=False, timeout=timeoutSeconds)
+			if (not scrape) or urlParsed.netloc in [bitlyUrl,'bit.ly','trib.al']:
+				singleRequest = requests.head(nextUrl, allow_redirects=False, timeout=timeoutSeconds)
+			else:
+				singleRequest = requests.get(nextUrl, allow_redirects=False, timeout=timeoutSeconds)
 		except:
 			# We can experience connection errors for various reasons.
 			# If we encounter one, append the URL to the end and move on.
@@ -174,7 +187,7 @@ if network not in ['facebook','twitter']:
 	quit()
 
 # Status.
-print 'Beginning scrape for %s user @%s.' % (network.title(), org)
+print 'Beginning %s URL scrape for %s.' % (network.title(), orgName)
 
 # Look for existing URLs.
 orgUrlsFilename = (filePath_urls % (network,org))
@@ -201,16 +214,19 @@ if not os.path.exists(contentDirectory):
 
 # Traverse all posts, urls.
 # enumerate() pattern is for debugging. It allows us to break after a certain number of posts if necessary.
+# Can remove before release.
 for (i, post) in enumerate(posts):
 	# Get links and traverse.
 	postUrls = associatedUrls(network,post)
 	if len(postUrls) == 0:
 		postsSansUrl += 1
 	for url in postUrls:
-		# Check to see if URL has ever been checked before. If so, note it and break.
+		# Check to see if URL has ever been checked before. If so, note it and continue.
+		# In practice, this is like breaking (most posts only have one link).
+		# But we must continue in case there is another link in the post that is valid.
 		if url in urls:
 			urlsSkipped += 1
-			break
+			continue
 
 		# Container for URL data. How we fill it depends on scrapeContent.
 		urlData = dict()
@@ -218,45 +234,29 @@ for (i, post) in enumerate(posts):
 		urlData['errorText'] = None
 		urlData['history'] = []
 		urlData['statusCode'] = None
-		urlData['scraped'] = False
+		urlData['scraped'] = scrapeContent
 		content = None
 
-		if scrapeContent:
-			# We will scrape content. Just use a regular request.get() call; we don't need to worry about stopping before the end.
-			# Make request.
-			try:
-				# Make request.
-				urlRequest = requests.get(url, timeout=timeoutSeconds)
-				# Now we have our data. Gather information about the URL(s) themselves.
-				# Lots of this could be derived later but storing it will make for easier searching.
-				urlData['history'] = [h.url for h in urlRequest.history] + [urlRequest.url]
-				# Log status codes. We may use these to detect non-200 results later for diagnostics.
-				urlData['statusCode'] = urlRequest.status_code
-				# Note that we scraped.
-				urlData['scraped'] = True
-				# Save content.
-				content = urlRequest.text.encode('utf8')
-			except:
-				urlData['history'] = [url]
-				# Get any errors. Alter the object accordingly.
-				e = sys.exc_info()[0]
-				urlData['errorText'] = str(e)
-		else:
-			# We are not scraping content. Use a traverseUrls() call in order to avoid triggering a "connection reset" error.
-			# Get history.
-			finalRequest, errorText, urlsTraversed = traverseUrls(url,targetDomain,stillTraversePattern,bitlyUrl)
-			urlData['history'] = urlsTraversed
+		# Make request. Use a traverseUrl() call to avoid triggering connection resets or contaminating Bitly observations.
+		finalRequest, errorText, urlsTraversed = traverseUrls(url,targetDomain,stillTraversePattern,bitlyUrl,scrapeContent)
 
-			# Special behavior if we encountered any content. Note status code.
-			if finalRequest is not None:
-				urlData['statusCode'] = finalRequest.status_code
-			# Handle any errors.
-			if errorText is not None:
-				urlData['errorText'] = errorText
+		# Set up history, status codes.
+		urlData['history'] = urlsTraversed
+		urlData['statusCode'] = urlRequest.status_code
 
-		# Store MD5.
+		# Handle errors.
+		if errorText is not None:
+			urlData['errorText'] = errorText
+
+		# Store MD5. Used for determining write location of content if we scraped it.
 		urlMd5 = md5(url.encode('utf8')).hexdigest()
 		urlData['md5'] = urlMd5
+
+		# Save content if we have it.
+		if bool(finalRequest.content):
+			with open(contentDirectory+urlMd5+'.html','w') as f:
+				f.write(finalRequest.content)
+			urlsScraped += 1
 
 		# Parse final URL.
 		urlParsed = urlparse(urlData['history'][-1])
@@ -268,12 +268,6 @@ for (i, post) in enumerate(posts):
 			'query': urlParsed.query,
 			'fragment': urlParsed.fragment
 		}
-
-		# Save content if we have it.
-		if content is not None:
-			with open(contentDirectory+urlMd5+'.html','w') as f:
-				f.write(content)
-			urlsScraped += 1
 
 		# Store in main URLs dictionary.
 		urls[url] = urlData
