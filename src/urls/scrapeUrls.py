@@ -240,9 +240,10 @@ for (i, post) in enumerate(posts):
 		# Make request. Use a traverseUrl() call to avoid triggering connection resets or contaminating Bitly observations.
 		finalRequest, errorText, urlsTraversed = traverseUrls(url,targetDomain,stillTraversePattern,bitlyUrl,scrapeContent)
 
-		# Set up history, status codes.
+		# Set up history, status codes. Codes only available if we made a final request.
 		urlData['history'] = urlsTraversed
-		urlData['statusCode'] = urlRequest.status_code
+		if finalRequest is not None:
+			urlData['statusCode'] = finalRequest.status_code
 
 		# Handle errors.
 		if errorText is not None:
@@ -253,7 +254,7 @@ for (i, post) in enumerate(posts):
 		urlData['md5'] = urlMd5
 
 		# Save content if we have it.
-		if bool(finalRequest.content):
+		if finalRequest is not None and bool(finalRequest.content):
 			with open(contentDirectory+urlMd5+'.html','w') as f:
 				f.write(finalRequest.content)
 			urlsScraped += 1
