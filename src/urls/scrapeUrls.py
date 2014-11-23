@@ -77,11 +77,10 @@ scrapeContent = True if int(sys.argv[4]) else 0
 # Get organizational information.
 allOrgs = json.load(open('../../conf/organizations.json'))
 
-# Handle target domains for non-scraping.
-if not scrapeContent:
-	targetDomain = allOrgs[org]['urls']['domain']
-	bitlyUrl = allOrgs[org]['urls']['bitly']
-	stillTraversePattern = allOrgs[org]['urls']['stillTraverse'] if 'stillTraverse' in allOrgs[org]['urls'] else None
+# Get information about the organization's URLs.
+targetDomain = allOrgs[org]['urls']['domain']
+bitlyUrl = allOrgs[org]['urls']['bitly']
+stillTraversePattern = allOrgs[org]['urls']['stillTraverse'] if 'stillTraverse' in allOrgs[org]['urls'] else None
 
 # Any other miscellanea.
 orgName = allOrgs[org]['name']
