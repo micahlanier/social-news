@@ -3,7 +3,10 @@
 
 """
 
-TODO
+Utilities for detecting certain kinds of Facebook links and extracting links from text.
+
+Uses URL-detection regular expression from:
+	https://gist.github.com/gruber/8891611
 
 """
 
@@ -34,10 +37,9 @@ def urlIsFacebookVideo(url):
 	return bool(re.match('^https?://(www\\.)?facebook.com/video.php\\?.+$', url))
 
 """
-TODO
+Return a list of all detected URLs, or an empty list if none.
 """
 def urlsInText(t):
-	# Perform search.
 	urlMatches = re.search(urlPattern, t)
 	if urlMatches:
 		return [g for g in urlMatches.groups()]
