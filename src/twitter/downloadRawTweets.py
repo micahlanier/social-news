@@ -61,7 +61,7 @@ for org, orgData in relevantOrgs.iteritems():
 	# Get SN.
 	sn = orgData['twitter']
 
-	print 'Retrieving tweets for organization "%s" (@%s).' % (org,sn)
+	print 'Retrieving tweets for %s (@%s).' % (orgData['name'],sn)
 
 	# Set up container for tweets.
 	tweets = []
@@ -101,6 +101,6 @@ for org, orgData in relevantOrgs.iteritems():
 	json.dump(tweets, open(filename,'w'))
 
 	# Status.
-	print 'Done retrieving tweets for organization "%s" (@%s).' % (org,sn)
+	print 'Done retrieving tweets for %s (@%s).' % (orgData['name'],sn)
 	print 'Read %d tweets total.' % len(tweets)
 	print 'Dates: %s to %s' % (str(minTweetDate),str(maxTweetDate))

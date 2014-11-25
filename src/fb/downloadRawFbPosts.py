@@ -18,9 +18,9 @@ import dateutil.parser
 # List of organizations to fetch. Either a list or "all".
 orgs = 'all'
 # Upper limit of date.
-maxDate = dt.datetime(2014,11,10,tzinfo=dateutil.tz.tzutc()) #dt.datetime.utcnow()
+maxDate = dt.datetime(2014,11,25,tzinfo=dateutil.tz.tzutc()) #dt.datetime.utcnow()
 # Lower limit of date.
-minDate = dt.datetime(2014,10,30,tzinfo=dateutil.tz.tzutc())
+minDate = dt.datetime(2014,11,14,tzinfo=dateutil.tz.tzutc())
 # Facebook is not as explicit as Twitter about limiting. Set this as needed if you run into any issues.
 postLimit = 75
 
