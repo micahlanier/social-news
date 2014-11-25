@@ -147,6 +147,7 @@ for org, orgData in relevantOrgs.iteritems():
 		scoreInfo, tokenCount = sentimentClassify(text)
 		# Stats.
 		wordsTagged += len(scoreInfo['tokens'])
+		tokensCounted += tokenCount
 		if (len(scoreInfo['tokens'])):
 			scoreInfo['scored'] = True
 			postsTagged += 1
@@ -170,18 +171,18 @@ for org, orgData in relevantOrgs.iteritems():
 	user = orgData['facebook']
 	print 'Starting Facebook sentiment analysis for %s.' % orgName
 
+	# Find posts.
+	postsFilename = [f for f in os.listdir(consolidatedFbPostsDirectory) if f.find(org) == 0][-1]
+	posts = json.load(open(consolidatedFbPostsDirectory+postsFilename))
+
 	# Container for sentiments.
 	sentiments = dict()
 
 	# Stats.
-	postCount = len(tweets)
+	postCount = len(posts)
 	postsTagged = 0
 	tokensCounted = 0
 	wordsTagged = 0
-
-	# Find posts.
-	postsFilename = [f for f in os.listdir(consolidatedFbPostsDirectory) if f.find(org) == 0][-1]
-	posts = json.load(open(consolidatedFbPostsDirectory+postsFilename))
 
 	# Iterate over them and extract sentiment information.
 	# Note that we'll score three things: the post, the headline, and the description, if all are present.
@@ -195,6 +196,7 @@ for org, orgData in relevantOrgs.iteritems():
 			scoreInfo, tokenCount = sentimentClassify(text)
 			# Stats.
 			wordsTagged += len(scoreInfo['tokens'])
+			tokensCounted += tokenCount
 			scoreInfo['scored'] = bool(len(scoreInfo['tokens']))
 			# Append to post sentiments.
 			postSentiments[field] = scoreInfo
