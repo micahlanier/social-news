@@ -71,7 +71,7 @@ currTimestamp = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 # Set network, screen name, and sleep time based on inputs in sys.argv.
 org = str(sys.argv[1])
 network = str(sys.argv[2])
-sleepSeconds = int(sys.argv[3])
+sleepSeconds = float(sys.argv[3])
 scrapeContent = True if int(sys.argv[4]) else 0
 
 # Get organizational information.
