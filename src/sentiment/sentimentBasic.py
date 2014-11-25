@@ -32,8 +32,8 @@ import socialUrlUtils
 consolidatedTweetsDirectory  = '../../../data/twitter/consolidated/'
 consolidatedFbPostsDirectory = '../../../data/facebook/consolidated/'
 # Sentiment directories.
-twitterSentimentDirectory  = '../../../data/sentiment/twitter/'
-fbSentimentDirectory       = '../../../data/sentiment/facebook/'
+twitterSentimentDirectory  = '../../../data/sentimentBasic/twitter/'
+fbSentimentDirectory       = '../../../data/sentimentBasic/facebook/'
 
 # Organization setup.
 allOrgs = json.load(open('../../conf/organizations.json'))
@@ -53,7 +53,7 @@ def cleanMessage(message):
 	message = re.sub('@[a-zA-Z0-9]+','',message)
 	# Remove links.
 	links = socialUrlUtils.urlsInText(message)
-	links.reverse()
+	# links.reverse()
 	for link in links:
 		message = message.replace(link,'')
 	# Return.
