@@ -11,7 +11,7 @@ This script will traverse consolidated Twitter/Facebook data and apply sentiment
 # Edit things here to your liking. But please don't commit them needlessly.
 
 # Organizations for which to perform sentiment analysis. Either a list or "all".
-orgs = ['nytimes']
+orgs = 'all'
 
 
 
@@ -37,7 +37,7 @@ fbSentimentDirectory       = '../../../data/sentiment/facebook/'
 
 # Organization setup.
 allOrgs = json.load(open('../../conf/organizations.json'))
-if type(orgs) == str:
+if type(orgs) == str and orgs == 'all':
 	orgs = allOrgs.keys()
 relevantOrgs = dict((k, allOrgs[k]) for k in orgs)
 
