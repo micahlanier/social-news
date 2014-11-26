@@ -57,7 +57,7 @@ def cleanMessage(message):
 	for link in links:
 		message = message.replace(link,'')
 	# Return.
-	return message
+	return message.strip()
 
 """
 Tokenize, tag, and sentiment-classify a message.
