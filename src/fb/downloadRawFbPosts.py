@@ -20,7 +20,7 @@ orgs = 'all'
 # Upper limit of date.
 maxDate = dt.datetime(2014,11,25,tzinfo=dateutil.tz.tzutc()) #dt.datetime.utcnow()
 # Lower limit of date.
-minDate = dt.datetime(2014,11,14,tzinfo=dateutil.tz.tzutc())
+minDate = dt.datetime(2014, 8,31,tzinfo=dateutil.tz.tzutc())
 # Facebook is not as explicit as Twitter about limiting. Set this as needed if you run into any issues.
 postLimit = 75
 
@@ -105,7 +105,7 @@ for org, orgData in relevantOrgs.iteritems():
 	loopMaxDate = maxDate
 
 	# Set up objects hold our request.
-	requestPath = acct + '/feed'
+	requestPath = acct + '/posts'
 	requestParams = dict()
 	requestParams['limit'] = postLimit
 
