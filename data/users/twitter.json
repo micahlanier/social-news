@@ -1,0 +1,177 @@
+{
+    "foxnews": {
+        "statuses_count": 187190, 
+        "followers_count": 4569469, 
+        "favourites_count": 8, 
+        "friends_count": 388, 
+        "listed_count": 44240
+    }, 
+    "ap": {
+        "statuses_count": 94783, 
+        "followers_count": 4390250, 
+        "favourites_count": 2, 
+        "friends_count": 7359, 
+        "listed_count": 64394
+    }, 
+    "newsweek": {
+        "statuses_count": 30401, 
+        "followers_count": 2407703, 
+        "favourites_count": 1256, 
+        "friends_count": 58798, 
+        "listed_count": 33503
+    }, 
+    "cbsnews": {
+        "statuses_count": 69870, 
+        "followers_count": 3422851, 
+        "favourites_count": 66, 
+        "friends_count": 412, 
+        "listed_count": 37471
+    }, 
+    "bbc": {
+        "statuses_count": 185183, 
+        "followers_count": 8009960, 
+        "favourites_count": 0, 
+        "friends_count": 61, 
+        "listed_count": 82626
+    }, 
+    "reuters": {
+        "statuses_count": 111848, 
+        "followers_count": 5507753, 
+        "favourites_count": 841, 
+        "friends_count": 1043, 
+        "listed_count": 88494
+    }, 
+    "bostonglobe": {
+        "statuses_count": 82616, 
+        "followers_count": 326073, 
+        "favourites_count": 121, 
+        "friends_count": 1215, 
+        "listed_count": 6593
+    }, 
+    "dailymail": {
+        "statuses_count": 123314, 
+        "followers_count": 778262, 
+        "favourites_count": 452, 
+        "friends_count": 2356, 
+        "listed_count": 7421
+    }, 
+    "cnn": {
+        "statuses_count": 52048, 
+        "followers_count": 14890737, 
+        "favourites_count": 758, 
+        "friends_count": 1017, 
+        "listed_count": 101354
+    }, 
+    "msnbc": {
+        "statuses_count": 67366, 
+        "followers_count": 703027, 
+        "favourites_count": 606, 
+        "friends_count": 643, 
+        "listed_count": 14033
+    }, 
+    "afp": {
+        "statuses_count": 61853, 
+        "followers_count": 274645, 
+        "favourites_count": 81, 
+        "friends_count": 483, 
+        "listed_count": 7800
+    }, 
+    "slate": {
+        "statuses_count": 112907, 
+        "followers_count": 1213901, 
+        "favourites_count": 77, 
+        "friends_count": 514, 
+        "listed_count": 26247
+    }, 
+    "usatoday": {
+        "statuses_count": 103740, 
+        "followers_count": 1353329, 
+        "favourites_count": 786, 
+        "friends_count": 777, 
+        "listed_count": 23718
+    }, 
+    "washingtonpost": {
+        "statuses_count": 120788, 
+        "followers_count": 3729553, 
+        "favourites_count": 3970, 
+        "friends_count": 1149, 
+        "listed_count": 57777
+    }, 
+    "nytimes": {
+        "statuses_count": 157876, 
+        "followers_count": 14103661, 
+        "favourites_count": 1019, 
+        "friends_count": 996, 
+        "listed_count": 153158
+    }, 
+    "nbcnews": {
+        "statuses_count": 43663, 
+        "followers_count": 1923045, 
+        "favourites_count": 404, 
+        "friends_count": 2894, 
+        "listed_count": 24446
+    }, 
+    "latimes": {
+        "statuses_count": 90744, 
+        "followers_count": 1133026, 
+        "favourites_count": 1473, 
+        "friends_count": 10732, 
+        "listed_count": 22551
+    }, 
+    "thedailybeast": {
+        "statuses_count": 110132, 
+        "followers_count": 714348, 
+        "favourites_count": 753, 
+        "friends_count": 756, 
+        "listed_count": 20652
+    }, 
+    "huffingtonpost": {
+        "statuses_count": 369807, 
+        "followers_count": 4885278, 
+        "favourites_count": 577, 
+        "friends_count": 5564, 
+        "listed_count": 72489
+    }, 
+    "theguardian": {
+        "statuses_count": 97916, 
+        "followers_count": 2931873, 
+        "favourites_count": 130, 
+        "friends_count": 1083, 
+        "listed_count": 34512
+    }, 
+    "yahoonews": {
+        "statuses_count": 85367, 
+        "followers_count": 853489, 
+        "favourites_count": 285, 
+        "friends_count": 2288, 
+        "listed_count": 12901
+    }, 
+    "npr": {
+        "statuses_count": 73399, 
+        "followers_count": 3048373, 
+        "favourites_count": 686, 
+        "friends_count": 74137, 
+        "listed_count": 53692
+    }, 
+    "wsj": {
+        "statuses_count": 100143, 
+        "followers_count": 5365492, 
+        "favourites_count": 967, 
+        "friends_count": 962, 
+        "listed_count": 83152
+    }, 
+    "time": {
+        "statuses_count": 99991, 
+        "followers_count": 6508164, 
+        "favourites_count": 416, 
+        "friends_count": 774, 
+        "listed_count": 85707
+    }, 
+    "abcnews": {
+        "statuses_count": 98599, 
+        "followers_count": 3725013, 
+        "favourites_count": 561, 
+        "friends_count": 859, 
+        "listed_count": 36654
+    }
+}

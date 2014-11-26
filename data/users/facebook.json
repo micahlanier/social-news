@@ -1,0 +1,127 @@
+{
+    "foxnews": {
+        "talking_about_count": 1873809, 
+        "id": "15704546335", 
+        "likes": 9629275
+    }, 
+    "ap": {
+        "talking_about_count": 2504, 
+        "id": "249655421622", 
+        "likes": 256165
+    }, 
+    "newsweek": {
+        "talking_about_count": 4880, 
+        "id": "18343191100", 
+        "likes": 649138
+    }, 
+    "cbsnews": {
+        "talking_about_count": 610587, 
+        "id": "131459315949", 
+        "likes": 2414399
+    }, 
+    "bbc": {
+        "talking_about_count": 377780, 
+        "id": "59145437587", 
+        "likes": 8662661
+    }, 
+    "reuters": {
+        "talking_about_count": 26905, 
+        "id": "114050161948682", 
+        "likes": 1977012
+    }, 
+    "bostonglobe": {
+        "talking_about_count": 58228, 
+        "id": "5637143257", 
+        "likes": 209859
+    }, 
+    "dailymail": {
+        "talking_about_count": 351257, 
+        "id": "164305410295882", 
+        "likes": 2265140
+    }, 
+    "cnn": {
+        "talking_about_count": 612965, 
+        "id": "5550296508", 
+        "likes": 15940675
+    }, 
+    "msnbc": {
+        "talking_about_count": 229323, 
+        "id": "273864989376427", 
+        "likes": 930567
+    }, 
+    "afp": {
+        "talking_about_count": 6757, 
+        "id": "155857464452265", 
+        "likes": 141623
+    }, 
+    "slate": {
+        "talking_about_count": 93587, 
+        "id": "21516776437", 
+        "likes": 898133
+    }, 
+    "usatoday": {
+        "talking_about_count": 390108, 
+        "id": "13652355666", 
+        "likes": 2731498
+    }, 
+    "washingtonpost": {
+        "talking_about_count": 276947, 
+        "id": "6250307292", 
+        "likes": 2980542
+    }, 
+    "nytimes": {
+        "talking_about_count": 402208, 
+        "id": "5281959998", 
+        "likes": 8849225
+    }, 
+    "nbcnews": {
+        "talking_about_count": 511219, 
+        "id": "155869377766434", 
+        "likes": 5407498
+    }, 
+    "latimes": {
+        "talking_about_count": 59407, 
+        "id": "5863113009", 
+        "likes": 1572138
+    }, 
+    "thedailybeast": {
+        "talking_about_count": 57069, 
+        "id": "37763684202", 
+        "likes": 1739474
+    }, 
+    "huffingtonpost": {
+        "talking_about_count": 2241893, 
+        "id": "18468761129", 
+        "likes": 4602921
+    }, 
+    "theguardian": {
+        "talking_about_count": 351507, 
+        "id": "10513336322", 
+        "likes": 3982779
+    }, 
+    "yahoonews": {
+        "talking_about_count": 375862, 
+        "id": "338028696036", 
+        "likes": 5974267
+    }, 
+    "npr": {
+        "talking_about_count": 787728, 
+        "id": "10643211755", 
+        "likes": 4167311
+    }, 
+    "wsj": {
+        "talking_about_count": 75284, 
+        "id": "8304333127", 
+        "likes": 3374081
+    }, 
+    "time": {
+        "talking_about_count": 646947, 
+        "id": "10606591490", 
+        "likes": 6989384
+    }, 
+    "abcnews": {
+        "talking_about_count": 1968937, 
+        "id": "86680728811", 
+        "likes": 5802047
+    }
+}
