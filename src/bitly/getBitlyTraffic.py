@@ -2,11 +2,22 @@
 
 """
 
-TODO
+This script fetches Bitly traffic for all such links contained in social media posts.
+All URLs for which traffic has already been fetched will be ignored.
 
 """
 
 ##### Configuration
+
+# We'll use these libraries immediately.
+import datetime as dt
+import dateutil.parser
+
+# Last date/time to fetch traffic. This should be several days in the past. There is currently no way to re-fetch data.
+lastDate = dt.datetime(2014,11,24,8,tzinfo=dateutil.tz.tzutc())
+
+# Sleep time between requests. Bitly is opaque with their API limits, so there is no easy way to determine to set this.
+sleepSeconds = 0.1
 
 # This script is going to take a long time to run, so we want to store URLs in chunks in case anything goes wrong.
 incrementalUrlsToStore = 50
@@ -19,7 +30,6 @@ timeoutSeconds = 10.0
 ##### Main Setup
 
 # Libraries.
-import datetime as dt
 import json
 import os
 import requests
@@ -29,8 +39,11 @@ import time
 import urllib
 from urlparse import urlparse
 
+# Our own custom URL parsing code for Facebook.
+import socialUrlUtils
+
 # Data directories.
-filePath_urls = '../../../data/urls/%s/%s.json'
+dirPath_consolidated = '../../../data/%s/consolidated/'
 filePath_bitly = '../../../data/bitly/%s/%s.json'
 dirPath_bitlyBackups = '../../../data/backup/bitly/%s/'
 
@@ -47,7 +60,6 @@ currTimestamp = dt.datetime.now().strftime('%Y-%m-%dT%H-%M-%S')
 # Set network, screen name, and sleep time based on inputs in sys.argv.
 org = str(sys.argv[1])
 network = str(sys.argv[2])
-sleepSeconds = float(sys.argv[3])
 
 # Get organizational information.
 allOrgs = json.load(open('../../conf/organizations.json'))
@@ -70,6 +82,7 @@ bitlyClicksBaseUrl = 'https://api-ssl.bitly.com/v3/link/clicks?'
 urlsSkipped = 0
 urlsSansBitlyUrl = 0
 bitlyStatsRetrieved = 0
+recentPostsSkipped = 0
 
 # Validation.
 if network not in ['facebook','twitter']:
@@ -93,12 +106,37 @@ if bitlyFileExists:
 	shutil.copyfile(orgBitlyFilename, backupFilename)
 	print 'Backed up bitly file to %s' % '/'.join(backupFilename.split('/')[-2:])
 
-# Get URLs.
-urls = json.load(open(filePath_urls % (network, org)))
+# Get posts (for URLs).
+postFilename = [f for f in os.listdir(dirPath_consolidated % network) if f.startswith(org)][-1]
+posts = json.load(open((dirPath_consolidated % network) + postFilename))
+
+# Traverse posts and find URLs.
+urls = set()
+if network == 'facebook':
+	for p in posts:
+		# Verify date.
+		if dateutil.parser.parse(p['created_time']) < lastDate:
+			# Find URLs to add.
+			if 'link' in p:
+				urls.add(p['link'])
+			if 'message' in p:
+				for url in socialUrlUtils.urlsInText(p['message']):
+					urls.add(url)
+		else:
+			recentPostsSkipped += 1
+elif network == 'twitter':
+	for p in posts:
+		# Verify date.
+		if dateutil.parser.parse(p['created_at']) < lastDate:
+			# Find URLs to add.
+			for url in p['entities']['urls']:
+				urls.add(url['expanded_url'])
+		else:
+			recentPostsSkipped += 1
 
 # Traverse all URLs.
 # enumerate() pattern is for debugging. It allows us to break after a certain number of URLs if necessary.
-for (i, url) in enumerate(urls.keys()):
+for (i, url) in enumerate(urls):
 	# Parse URL to determine if we should read.
 	urlInfo = urlparse(url)
 	# Examine domain. Ensure a bitly link; else continue.
@@ -151,3 +189,4 @@ print 'Finished bitly retrieval for %s on %s.' % (orgName, network.title())
 print 'URLs skipped:              %d' % urlsSkipped
 print 'URLs retrieved:            %d' % bitlyStatsRetrieved
 print 'Posts without a bitly URL: %d' % urlsSansBitlyUrl
+print 'Recent posts skipped:      %d' % recentPostsSkipped
