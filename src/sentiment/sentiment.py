@@ -61,7 +61,8 @@ def cleanMessage(message):
 
 """
 Map POS from pos_tag to Wordnet.
-Reuses: https://github.com/linkTDP/BigDataAnalysis_TweetSentiment/blob/master/SentiWordnet.py
+Reimplements logic from:
+	https://github.com/linkTDP/BigDataAnalysis_TweetSentiment/blob/master/SentiWordnet.py
 """
 posMap = {'NN': wn.NOUN, 'VB': wn.VERB, 'JJ': wn.ADJ, 'RB': wn.ADV}
 def posTagToWn(posTag):
