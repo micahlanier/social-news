@@ -1,0 +1,18 @@
+{
+	"agg": {
+		"name": "Aggregate",
+		"description": "Sentiment of all other items (message, name, description) combined."
+	},
+	"message": {
+		"name": "Message",
+		"description": "Sentiment of the Facebook post body, excluding article \"preview\" content."
+	},
+	"name": {
+		"name": "Name (Headline)",
+		"description": "Sentiment of the Facebook name (usually the news story headline)."
+	},
+	"description": {
+		"name": "Description (Article Preview)",
+		"description": "Sentiment of the Facebook description field (usually an article preview)."
+	}
+}
