@@ -2,6 +2,7 @@
 	"nytimes": {
 		"name": "NY Times",
 		"category": "Newspaper",
+		"subjectiveCategory": "Esteemed",
 		"twitter": "nytimes",
 		"facebook": "nytimes",
 		"urls": {
@@ -12,6 +13,7 @@
 	"wsj": {
 		"name": "Wall Street Journal",
 		"category": "Newspaper",
+		"subjectiveCategory": "Esteemed",
 		"twitter": "wsj",
 		"facebook": "wsj",
 		"urls": {
@@ -22,6 +24,7 @@
 	"washingtonpost": {
 		"name": "Washington Post",
 		"category": "Newspaper",
+		"subjectiveCategory": "Esteemed",
 		"twitter": "washingtonpost",
 		"facebook": "washingtonpost",
 		"urls": {
@@ -32,6 +35,7 @@
 	"bostonglobe": {
 		"name": "Boston Globe",
 		"category": "Newspaper",
+		"subjectiveCategory": "Esteemed",
 		"twitter": "bostonglobe",
 		"facebook": "globe",
 		"urls": {
@@ -42,6 +46,7 @@
 	"latimes": {
 		"name": "LA Times",
 		"category": "Newspaper",
+		"subjectiveCategory": "Esteemed",
 		"twitter": "latimes",
 		"facebook": "latimes",
 		"urls": {
@@ -52,6 +57,7 @@
 	"usatoday": {
 		"name": "USA Today",
 		"category": "Newspaper",
+		"subjectiveCategory": "Sensational",
 		"twitter": "usatoday",
 		"facebook": "usatoday",
 		"urls": {
@@ -62,6 +68,7 @@
 	"cnn": {
 		"name": "CNN",
 		"category": "Cable",
+		"subjectiveCategory": "Sensational",
 		"twitter": "cnn",
 		"facebook": "cnn",
 		"urls": {
@@ -72,6 +79,7 @@
 	"foxnews": {
 		"name": "Fox News",
 		"category": "Cable",
+		"subjectiveCategory": "Sensational",
 		"twitter": "foxnews",
 		"facebook": "foxnews",
 		"urls": {
@@ -82,6 +90,7 @@
 	"msnbc": {
 		"name": "MSNBC",
 		"category": "Cable",
+		"subjectiveCategory": "Sensational",
 		"twitter": "msnbc",
 		"facebook": "msnbc",
 		"urls": {
@@ -92,6 +101,7 @@
 	"abcnews": {
 		"name": "ABC News",
 		"category": "Broadcast",
+		"subjectiveCategory": "Traditional",
 		"twitter": "abc",
 		"facebook": "abcnews",
 		"urls": {
@@ -102,6 +112,7 @@
 	"cbsnews": {
 		"name": "CBS News",
 		"category": "Broadcast",
+		"subjectiveCategory": "Traditional",
 		"twitter": "cbsnews",
 		"facebook": "cbsnews",
 		"urls": {
@@ -112,6 +123,7 @@
 	"nbcnews": {
 		"name": "NBC News",
 		"category": "Broadcast",
+		"subjectiveCategory": "Traditional",
 		"twitter": "nbcnews",
 		"facebook": "nbcnews",
 		"urls": {
@@ -122,6 +134,7 @@
 	"ap": {
 		"name": "Associated Press",
 		"category": "Wire",
+		"subjectiveCategory": "Anonymous",
 		"twitter": "ap",
 		"facebook": "apnews",
 		"urls": {
@@ -132,6 +145,7 @@
 	"afp": {
 		"name": "AFP",
 		"category": "Wire",
+		"subjectiveCategory": "Anonymous",
 		"twitter": "afp",
 		"facebook": "afpnewsenglish",
 		"urls": {
@@ -142,6 +156,7 @@
 	"reuters": {
 		"name": "Reuters",
 		"category": "Wire",
+		"subjectiveCategory": "Anonymous",
 		"twitter": "reuters",
 		"facebook": "reuters",
 		"urls": {
@@ -152,6 +167,7 @@
 	"time": {
 		"name": "Time",
 		"category": "Newsweekly",
+		"subjectiveCategory": "Traditional",
 		"twitter": "time",
 		"facebook": "time",
 		"urls": {
@@ -162,6 +178,7 @@
 	"newsweek": {
 		"name": "Newsweek",
 		"category": "Newsweekly",
+		"subjectiveCategory": "Traditional",
 		"twitter": "newsweek",
 		"facebook": "newsweek",
 		"urls": {
@@ -172,6 +189,7 @@
 	"thedailybeast": {
 		"name": "The Daily Beast",
 		"category": "Online",
+		"subjectiveCategory": "Novel",
 		"twitter": "thedailybeast",
 		"facebook": "thedailybeast",
 		"urls": {
@@ -182,6 +200,7 @@
 	"huffingtonpost": {
 		"name": "Huffington Post",
 		"category": "Online",
+		"subjectiveCategory": "Sensational",
 		"twitter": "huffingtonpost",
 		"facebook": "huffingtonpost",
 		"urls": {
@@ -192,6 +211,7 @@
 	"slate": {
 		"name": "Slate",
 		"category": "Online",
+		"subjectiveCategory": "Novel",
 		"twitter": "slate",
 		"facebook": "slate",
 		"urls": {
@@ -202,6 +222,7 @@
 	"bbc": {
 		"name": "BBC",
 		"category": "International",
+		"subjectiveCategory": "Traditional",
 		"twitter": "bbcworld",
 		"facebook": "bbcworldnews",
 		"urls": {
@@ -212,6 +233,7 @@
 	"dailymail": {
 		"name": "The Daily Mail",
 		"category": "International",
+		"subjectiveCategory": "Sensational",
 		"twitter": "mailonline",
 		"facebook": "dailymail",
 		"urls": {
@@ -222,6 +244,7 @@
 	"theguardian": {
 		"name": "The Guardian",
 		"category": "International",
+		"subjectiveCategory": "Traditional",
 		"twitter": "guardian",
 		"facebook": "theguardian",
 		"urls": {
@@ -233,6 +256,7 @@
 	"yahoonews": {
 		"name": "Yahoo News",
 		"category": "Aggregator",
+		"subjectiveCategory": "Anonymous",
 		"twitter": "yahoonews",
 		"facebook": "yahoonews",
 		"urls": {
@@ -243,6 +267,7 @@
 	"npr": {
 		"name": "NPR News",
 		"category": "Other",
+		"subjectiveCategory": "Esteemed",
 		"twitter": "nprnews",
 		"facebook": "npr",
 		"urls": {
