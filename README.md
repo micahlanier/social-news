@@ -30,13 +30,19 @@ Files
 -----
 The root directory of this repository contains the following directories. Please keep up-to-date :-).
 
+* /book/: Process book composition. Will eventually contain a "master" book for consolidation and final submission.
 * /conf/: Configuration files. Do not store keys or access credentials, please!
-	* local-templates: Templates for local configuration files.
-* /data/: Data. Please store voluminous data on Dropbox—only limited, static data should go here.
+	* local-templates: Templates for local configuration files. Common practice has been to store these in a "conf" directory stored in the directory that contains your *social-news* checkout.
+* /data/: Data. Please store voluminous data on Dropbox; only limited, static data should go here.
 * /doc/: Documentation.
-* /log/: Any notes that don't fit easily in git commits.
-* /ref/: Reference materials.
+* /log/: Any log notes that don't fit easily in git commits.
+* /note/: Longer notes about general methodology or implementation; subjects fit for deliberation.
 * /src/: Source files.
-	* ipynb/: iPython notebooks.
+	* bitly/: Code for pulling from Bitly.
 	* fb/: Code for pulling from Facebook.
+    * mergeUrls/: Process for merging social data into digestible datasets.
+    * sentiment/: Sentiment analysis code.
 	* twitter/: Code for pulling from Twitter.
+    * urls/: URL-scraping scripts.
+    * users/: Account detail-fetching scripts for Twitter/Facebook.
+* /web/: Website design files.
