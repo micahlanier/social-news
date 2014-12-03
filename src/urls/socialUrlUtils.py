@@ -40,7 +40,4 @@ def urlIsFacebookVideo(url):
 Return a list of all detected URLs, or an empty list if none.
 """
 def urlsInText(t):
-	urlMatches = re.search(urlPattern, t)
-	if urlMatches:
-		return [g for g in urlMatches.groups()]
-	return []
+	return re.findall(urlPattern, t)
