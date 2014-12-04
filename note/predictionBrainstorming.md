@@ -17,7 +17,8 @@ Here are some potential feature categories that we can use:
     + Twitter retweets/favorites
     + Facebook likes/shares/comments
 - Tweet/post content features:
-    + Indicator variable for Facebook post containing a photo or video
+    + Categorical Facebook media variable
+    + Categorical Twitter media variable
 - News organization features:
     + Organization itself (25-level factor)
     + Organization category
