@@ -8,7 +8,8 @@
 		"urls": {
 			"domain": "nytimes.com",
 			"bitly": "nyti.ms"
-		}
+		},
+		"socialFlow": true
 	},
 	"wsj": {
 		"name": "Wall Street Journal",
@@ -19,7 +20,8 @@
 		"urls": {
 			"domain": "wsj.com",
 			"bitly": "on.wsj.com"
-		}
+		},
+		"socialFlow": true
 	},
 	"washingtonpost": {
 		"name": "Washington Post",
@@ -30,7 +32,8 @@
 		"urls": {
 			"domain": "washingtonpost.com",
 			"bitly": "wapo.st"
-		}
+		},
+		"socialFlow": true
 	},
 	"bostonglobe": {
 		"name": "Boston Globe",
@@ -41,7 +44,8 @@
 		"urls": {
 			"domain": "bostonglobe.com",
 			"bitly": null
-		}
+		},
+		"socialFlow": false
 	},
 	"latimes": {
 		"name": "LA Times",
@@ -52,7 +56,8 @@
 		"urls": {
 			"domain": "latimes.com",
 			"bitly": "lat.ms"
-		}
+		},
+		"socialFlow": false
 	},
 	"usatoday": {
 		"name": "USA Today",
@@ -63,7 +68,8 @@
 		"urls": {
 			"domain": "usatoday.com",
 			"bitly": "usat.ly"
-		}
+		},
+		"socialFlow": false
 	},
 	"cnn": {
 		"name": "CNN",
@@ -74,7 +80,8 @@
 		"urls": {
 			"domain": "cnn.com",
 			"bitly": "cnn.it"
-		}
+		},
+		"socialFlow": false
 	},
 	"foxnews": {
 		"name": "Fox News",
@@ -85,7 +92,8 @@
 		"urls": {
 			"domain": "foxnews.com",
 			"bitly": "fxn.ws"
-		}
+		},
+		"socialFlow": false
 	},
 	"msnbc": {
 		"name": "MSNBC",
@@ -96,7 +104,8 @@
 		"urls": {
 			"domain": "msnbc.com",
 			"bitly": "on.msnbc.com"
-		}
+		},
+		"socialFlow": false
 	},
 	"abcnews": {
 		"name": "ABC News",
@@ -107,7 +116,8 @@
 		"urls": {
 			"domain": "abcnews.go.com",
 			"bitly": "abcn.ws"
-		}
+		},
+		"socialFlow": false
 	},
 	"cbsnews": {
 		"name": "CBS News",
@@ -118,7 +128,8 @@
 		"urls": {
 			"domain": "cbsnews.com",
 			"bitly": "cbsn.ws"
-		}
+		},
+		"socialFlow": true
 	},
 	"nbcnews": {
 		"name": "NBC News",
@@ -129,7 +140,8 @@
 		"urls": {
 			"domain": "nbcnews.com",
 			"bitly": "nbcnews.to"
-		}
+		},
+		"socialFlow": false
 	},
 	"ap": {
 		"name": "Associated Press",
@@ -140,7 +152,8 @@
 		"urls": {
 			"domain": "ap.org",
 			"bitly": "apne.ws"
-		}
+		},
+		"socialFlow": true
 	},
 	"afp": {
 		"name": "AFP",
@@ -151,7 +164,8 @@
 		"urls": {
 			"domain": null,
 			"bitly": null
-		}
+		},
+		"socialFlow": false
 	},
 	"reuters": {
 		"name": "Reuters",
@@ -162,7 +176,8 @@
 		"urls": {
 			"domain": "reuters.com",
 			"bitly": "reut.rs"
-		}
+		},
+		"socialFlow": true
 	},
 	"time": {
 		"name": "Time",
@@ -173,7 +188,8 @@
 		"urls": {
 			"domain": "time.com",
 			"bitly": "ti.me"
-		}
+		},
+		"socialFlow": true
 	},
 	"newsweek": {
 		"name": "Newsweek",
@@ -184,7 +200,8 @@
 		"urls": {
 			"domain": "newsweek.com",
 			"bitly": "bit.ly"
-		}
+		},
+		"socialFlow": true
 	},
 	"thedailybeast": {
 		"name": "The Daily Beast",
@@ -195,7 +212,8 @@
 		"urls": {
 			"domain": "thedailybeast.com",
 			"bitly": "thebea.st"
-		}
+		},
+		"socialFlow": true
 	},
 	"huffingtonpost": {
 		"name": "Huffington Post",
@@ -206,7 +224,8 @@
 		"urls": {
 			"domain": "huffingtonpost.com",
 			"bitly": "huff.to"
-		}
+		},
+		"socialFlow": false
 	},
 	"slate": {
 		"name": "Slate",
@@ -217,7 +236,8 @@
 		"urls": {
 			"domain": "slate.com",
 			"bitly": "slate.me"
-		}
+		},
+		"socialFlow": false
 	},
 	"bbc": {
 		"name": "BBC",
@@ -228,7 +248,8 @@
 		"urls": {
 			"domain": "bbc.com",
 			"bitly": "bbc.in"
-		}
+		},
+		"socialFlow": true
 	},
 	"dailymail": {
 		"name": "The Daily Mail",
@@ -239,7 +260,8 @@
 		"urls": {
 			"domain": "dailymail.co.uk",
 			"bitly": "dailym.ai"
-		}
+		},
+		"socialFlow": true
 	},
 	"theguardian": {
 		"name": "The Guardian",
@@ -251,7 +273,8 @@
 			"domain": "theguardian.com",
 			"bitly": null,
 			"stillTraverse": "^http://([^/]+\\.)theguardian.com/p/[a-zA-Z0-9]+/(tw|fb)$"
-		}
+		},
+		"socialFlow": false
 	},
 	"yahoonews": {
 		"name": "Yahoo News",
@@ -262,7 +285,8 @@
 		"urls": {
 			"domain": "news.yahoo.com",
 			"bitly": "yhoo.it"
-		}
+		},
+		"socialFlow": false
 	},
 	"npr": {
 		"name": "NPR News",
@@ -273,6 +297,7 @@
 		"urls": {
 			"domain": "npr.org",
 			"bitly": "n.pr"
-		}
+		},
+		"socialFlow": false
 	}
 }
