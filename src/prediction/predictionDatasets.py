@@ -28,14 +28,10 @@ dirPath_consolidatedTw = '../../../data/twitter/consolidated/'
 dirPath_consolidatedFb = '../../../data/facebook/consolidated/'
 dirPath_bitly = '../../../data/bitly/%s/'
 dirPath_sentiment = '../../../data/sentiment/%s/'
+dirPath_urls = '../../../data/urls/%s/'
 filePath_dates = '../../conf/dates.json'
 filePath_output = '../../../data/unmergedPostSummaries/%s.csv'
 filePath_users = '../../data/users/%s.json'
-
-# User information.
-# usersTw = json.load(open('../../data/users/twitter.json'))
-# usersFb = json.load(open('../../data/users/facebook.json'))
-# Actually, nevermind. Rely on downstream processes to use these for adjustment.
 
 # Get organizational information.
 orgs = json.load(open('../../conf/organizations.json'))
@@ -106,6 +102,7 @@ for org, orgData in orgs.iteritems():
 	tweets    = json.load(open(dirPath_consolidatedTw + [f for f in os.listdir(dirPath_consolidatedTw) if f.startswith(org)][-1]))
 	bitly     = json.load(open((dirPath_bitly % service) + org + '.json'))
 	sentiment = json.load(open((dirPath_sentiment % service) + org + '.json'))
+	urls      = json.load(open((dirPath_urls % service) + org + '.json'))
 
 	# Traverse tweets.
 	for tweet in tweets:
@@ -140,6 +137,7 @@ for org, orgData in orgs.iteritems():
 		# Org features.
 		thisTweet['org'] = org
 		thisTweet['org_category'] = orgData['category'].lower()
+		thisTweet['social_flow_user'] = orgData['socialFlow']
 		thisTweet['followers_count'] = twAccounts[org]['followers_count']
 		# Sentiment features.
 		thisTweet['word_count'] = len([t for t in tokenize(cleanMessage(tweet['text'])) if t not in skipTokens])
@@ -173,6 +171,17 @@ for org, orgData in orgs.iteritems():
 			# Update raw clicks.
 			thisTweet['raw_clicks'][u] = bitly[u]['data']['link_clicks'] if u in bitly and bitly[u]['data'] else None
 
+		# URL records. These are not really features, just JSON arrays.
+		tweetEndUrls = []
+		# Traverse URLs.
+		for u in set(expandedUrls):
+			# Find any for which we have end destinations.
+			if u in urls:
+				# If we do, find end URL information and append to urls field.
+				tweetEndUrls.append(urls[u]['endUrl']['netloc']+urls[u]['endUrl']['path'])
+		# Make a string.
+		thisTweet['urls'] = json.dumps(tweetEndUrls)
+
 		# Whew. Finally. Now append to the list.
 		tweetInfo.append(thisTweet)
 
@@ -181,6 +190,7 @@ for org, orgData in orgs.iteritems():
 	posts     = json.load(open(dirPath_consolidatedFb + [f for f in os.listdir(dirPath_consolidatedFb) if f.startswith(org)][-1]))
 	bitly     = json.load(open((dirPath_bitly % service) + org + '.json'))
 	sentiment = json.load(open((dirPath_sentiment % service) + org + '.json'))
+	urls      = json.load(open((dirPath_urls % service) + org + '.json'))
 
 	# Traverse posts.
 	for post in posts:
@@ -216,6 +226,7 @@ for org, orgData in orgs.iteritems():
 		# Org features.
 		thisPost['org'] = org
 		thisPost['org_category'] = orgData['category'].lower()
+		thisPost['social_flow_user'] = orgData['socialFlow']
 		thisPost['account_likes'] = fbAccounts[org]['likes']
 		# Sentiment features.
 		thisPost['word_count'] = len([t for t in tokenize(cleanMessage(post['message'])) if t not in skipTokens]) if 'message' in post else 0
@@ -252,6 +263,17 @@ for org, orgData in orgs.iteritems():
 			urlNetworks[u].add(service)
 			# Update raw clicks.
 			thisPost['raw_clicks'][u] = bitly[u]['data']['link_clicks'] if u in bitly and bitly[u]['data'] else None
+
+		# URL records. These are not really features, just JSON arrays.
+		postEndUrls = []
+		# Traverse URLs.
+		for u in set(expandedUrls):
+			# Find any for which we have end destinations.
+			if u in urls:
+				# If we do, find end URL information and append to urls field.
+				postEndUrls.append(urls[u]['endUrl']['netloc']+urls[u]['endUrl']['path'])
+		# Make a string.
+		thisPost['urls'] = json.dumps(postEndUrls)
 
 		# Whew. Finally. Now append to the list.
 		postInfo.append(thisPost)
