@@ -128,12 +128,14 @@ for org, orgData in orgs.iteritems():
 		thisTweet['weekend_utc'] = thisTweet['day_of_week_utc'] >= 5
 		thisTweet['time_utc'] = float(created_utc.hour) + float(created_utc.minute)/60
 		thisTweet['minute_utc'] = float(created_utc.minute)
+		thisTweet['day_time_utc'] = thisTweet['day_of_week_utc'] + float(created_utc.hour) / 24.0
 		created_est = created_utc.replace(tzinfo=pytz.utc).astimezone(localTz)
 		thisTweet['date_est'] = str(created_est.date())
 		thisTweet['day_of_week_est'] = created_est.weekday()
 		thisTweet['weekend_est'] = thisTweet['day_of_week_est'] >= 5
 		thisTweet['time_est'] = float(created_est.hour) + float(created_est.minute)/60
 		thisTweet['minute_est'] = float(created_est.minute)
+		thisTweet['day_time_est'] = thisTweet['day_of_week_est'] + float(created_est.hour) / 24.0
 		# Org features.
 		thisTweet['org'] = org
 		thisTweet['org_category'] = orgData['category'].lower()
@@ -217,12 +219,14 @@ for org, orgData in orgs.iteritems():
 		thisPost['weekend_utc'] = thisPost['day_of_week_utc'] >= 5
 		thisPost['time_utc'] = float(created_utc.hour) + float(created_utc.minute)/60
 		thisPost['minute_utc'] = float(created_utc.minute)
+		thisPost['day_time_utc'] = thisPost['day_of_week_utc'] + float(created_utc.hour) / 24.0
 		created_est = created_utc.replace(tzinfo=pytz.utc).astimezone(localTz)
 		thisPost['date_est'] = str(created_est.date())
 		thisPost['day_of_week_est'] = created_est.weekday()
 		thisPost['weekend_est'] = thisPost['day_of_week_est'] >= 5
 		thisPost['time_est'] = float(created_est.hour) + float(created_est.minute)/60
 		thisPost['minute_est'] = float(created_est.minute)
+		thisPost['day_time_est'] = thisPost['day_of_week_est'] + float(created_est.hour) / 24.0
 		# Org features.
 		thisPost['org'] = org
 		thisPost['org_category'] = orgData['category'].lower()
