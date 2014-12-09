@@ -2,7 +2,7 @@
 
 """
 
-TODO
+This script combines Twitter and Facebook data with Bitly, URL, and sentiment information specifically for purposes of prediction.
 
 """
 
