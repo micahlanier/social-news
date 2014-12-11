@@ -67,13 +67,15 @@
 	<p>Stuff here.</p>
 	
 	<h2>Topic Modeling <small>What are publishers talking about?</small></h2>
-	<p>Topic modeling is an automatic way to generate a topic for an article. The computer selects a set of representative words from all corpus as a dictionary. Then it selects some words of this dictionary for each topic. Finally, it classifies each topic to the different topics.</p>
+	<p>Topic modeling is an automatic way to generate a topic for an article.
+	 The computer selects a set of representative words from all corpus to construct a dictionary. 
+	 Then it selects a few words in this dictionary to generate topics. Finally, it classifies each topic to different topics.</p>
 	
 </div>
 
 <div class="container">
 	<!-- Edit main content here. -->
-	<p>We used the two additional python liveries, nltk and gensim to auto generate the topic for each post of twitter and facebook. In general, there are two steps of topic generation. The first step is to lemmatize each post and build dictionary. The second step is to build the topic model and generate topic for each post.</p>
+	<p>We used two additional python libraries, nltk and gensim to auto generate the topic for each post of twitter and facebook. In general, there are two steps of topic generation. The first step is to lemmatize each post and build dictionary. The second step is to build the topic model and generate topic for each post.</p>
 	<!-- End content editing. -->
 </div>
 
@@ -82,17 +84,18 @@
 	<h4>Lemmatizing posts <small>Make the texts recognizable for machine.</small></h4>
 	<p>In order to input the texts to train the topic model, we need to clean the text and transform it to the format that is understandable for computer.</p>
 	<ol type="1">
-     <li>Eliminate stop words: stop words are generally functional but meaningless in a sentence, such as "the", "that", "and"...etc.
+     <li>Eliminate stop words: stop words are generally only grammatical but not very important.
 	  We remove them from posts since they are not representative.</li>
-	 <dl>* example of some stop words: 'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 'and', 'any', 'are', 'as',
+	 <dl>Example of some stop words: 'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 'and', 'any', 'are', 'as',
            'at', 'be', 'because', 'been', 'before'...ect.</dl>
 	 <li>Eliminate patterned word: some special formatted words are used in twitter or facebook posts, such as the words after #, @ RT...etc.
 	  Mostly those words are not a real word we can find in dictionary so computers cannot process them.</li>
      <li>Lemmatization: map the different forms of a words back to its original form.</li>
-	 <dl>For example,  it maps "gone", "went", "goes" to go.</dl>
+	 <dl>For example,  "gone", "went", "goes" are mapped to "go".</dl>
      <li>Morphology: Identify the morphological features of each words in a text. We only preserve nouns because they are more representative in topics.</li>
 	 <li>Dictionary: Build the dictionary of these lemmatized words. We would have the statistical summary of the words in this dictionary.
-	  We can further eliminate words based on the words' frequency. We did no do this because the posts of twitter and facebook are generally very short. A filter based on how many posts a word appears is not suitable here.</li>
+	  We can further eliminate words based on the words' frequency. We tuned this parameter but did not have a lot effects because the posts
+	   of twitter and facebook are generally very short. A filter based on how many posts a word appears is not sensible here.</li>
     </ol>  
 	<!-- End content editing. -->
 </div>
@@ -100,10 +103,10 @@
 <div class="container">
 	<!-- Edit main content here. -->
 	<h4>Building LDA Model <small>Train the topic model and classify the posts.</small></h4>
-	<p>The LDA Model is essentially a classifier, which classifies the posts to different groups. Then, it gives a about ten words as the name of each class. These ten words would be the topics.</p>
+	<p>The LDA Model is essentially a classifier, which classifies the posts to different classes. Then, it gives a about ten words as the name of each class. These ten words would be the topics of the posts in this class.</p>
 	<ol type="1">
      <li>Build the LDA model based on the dictionary in the previous step. Some parameters need setting in this model.
-	  One of the most important is the number of topics. We tuned this parameter to 500 based on the final result.</li>
+	  One of the most important is the number of topics. We tuned this parameter to 500 based on the final result that the posts with the topic are more similar.</li>
 	 <li>Generate topics from the LDA model. The number of topics would be what we determined.</li>
 	 <li>Put the lemmatized posts into our model. The LDA model would classify each post to one of the topics.</li>
     </ol>  
@@ -113,7 +116,7 @@
 <div class="container">
 	<!-- Edit main content here. -->
 	<h4>The top topics in twitter and facebook</h4>
-	<p>The topics generated by LDA model are only words any ratio of them appeared in the posts classified to this topic. 
+	<p>The topics generated by LDA model are simply words with their ratio appeared in the posts classified to this topic. 
 	In order to make the result more presentable, we manually changed the topics to more human readable ones.</p>
 	<!-- End content editing. -->
 </div>
