@@ -32,3 +32,8 @@
 		font-size: 63px;
 	}
 }
+
+/* Image centering. */
+img.img-center {
+	margin: 0 auto;
+}
