@@ -16,6 +16,9 @@
 		<!-- Custom styles for this template -->
 		<link href="./css/navbar-fixed-top.css" rel="stylesheet">
 
+		<!-- Custom styles for the social-news project -->
+		<link href="./css/social-news.css" rel="stylesheet">
+
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		    <!--[if lt IE 9]>
 		      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -74,7 +77,7 @@
 
 	<p>To perform our analysis, we needed to turn this:</p>
 
-	<blockquote class="twitter-tweet" data-cards="hidden" lang="en"><p>Stumbles on Ebola and ISIS could drive Obama to shake up his foreign policy team <a href="http://t.co/LH3ZuW1zI0">http://t.co/LH3ZuW1zI0</a></p>&mdash; The New York Times (@nytimes) <a href="https://twitter.com/nytimes/status/527640820317696000">October 30, 2014</a></blockquote><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+	<blockquote class="twitter-tweet" data-cards="hidden" lang="en"><p>Stumbles on Ebola and ISIS could drive Obama to shake up his foreign policy team <a href="http://t.co/LH3ZuW1zI0">http://t.co/LH3ZuW1zI0</a></p>&mdash; The New York Times (@nytimes) <a href="https://twitter.com/nytimes/status/527640820317696000">October 30, 2014</a></blockquote><script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 	<p>Into an underlying data representation (JSON) that we can work with. Twitter&rsquo;s API is a breeze to work with, but features a frustrating 3,200 tweet limit when retrieving <a href="https://dev.twitter.com/rest/reference/get/statuses/user_timeline">recent posts on a user&rsquo;s timeline</a>. This turned our Twitter retrievals into a two-step process: download all recent tweets for each organization, and then &ldquo;scrape&rdquo; older tweets for more prolific posters (e.g., <a href="http://www.twitter.com/nytimes">@nytimes</a>, <a href="http://www.twitter.com/huffingtonpost">@huffingtonpost</a>) so as to obtain a dataset with a specific time range represented.</p>
 
@@ -88,9 +91,9 @@
 
 	<p>Once again, we&rsquo;re tasked with turning a Facebook post:</p>
 
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/en_US/all.js#xfbml=1"; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script>
-<div class="fb-post" data-href="https://www.facebook.com/nytimes/posts/10150462841769999" data-width="466"><div class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/nytimes/posts/10150462841769999">Post</a> by <a href="https://www.facebook.com/nytimes">The New York Times</a>.</div></div>
+	<img src="img/data/nyt_fb_post_example.png" class="img-responsive center-block" />
+
+	<!-- <div id="fb-root"></div><script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/en_US/all.js#xfbml=1"; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script><div class="fb-post" data-href="https://www.facebook.com/nytimes/posts/10150462841769999" data-width="466"><div class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/nytimes/posts/10150462841769999">Post</a> by <a href="https://www.facebook.com/nytimes">The New York Times</a>.</div></div> -->
 
 	<p>Into raw JSON that we can store and manipulate. This turns out to be an easier problem than retrieving tweets: publishers post less often on Facebook, and the company did not enforce API limits that hindered our efforts to draw a large dataset of posts. To retrieve this data, our Python scripts queried the appropriate <a href="https://developers.facebook.com/docs/graph-api/reference/v2.2/user/feed/">Graph API</a> for recent time ranges, for each organization. As with Twitter, we retrieved this data progressively (to ensure up-to-date like, comment, and share counts), and consolidated the latest data we had for each post before analysis.</p>
 
