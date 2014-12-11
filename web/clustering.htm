@@ -92,16 +92,199 @@
 	<p>In our analysis, we define several key social media metrics to cluster the 25 news organizations.</p>
 	<p>Facebook likes per bitly click:  this is the quantity of Facebook likes a particular article receives divided by its quantity of bitly link clicks (a measure of site traffic)</p>
 	
-	<!-- TODO PUT IN IMAGE OF EQUATION -->
-	<p>We also define the following metrics which are calculated in a similar fashion.</p>
+	<p>We also define the following metrics in a similar fashion.</p>
 	<p>Facebook shares per bitly click</p>
 	<p>Twitter retweets per bitly click</p>
-	<p>Twitter favorites per bitly click:  </p>
+	<p>Twitter favorites per bitly click</p>
 	<hr/>
 	
 	<p>First we calculate the above social media metrics for each of the 23,366 matched articles in our data set. Then we calculate the average the social media metrics for each news organization. We then are able to arrive at a tabular data shown below.</p>
 	
-	<!-- TODO Show Data Set -->
+	<!-- Table Form of Data Set -->
+	<table border=\"1\" class=\"dataframe\">
+        <thead>
+        <tr style=\"text-align: left;\">
+        <th></th>
+        <th>Twitter favorites per bitly click</th>
+        <th>Twitter retweets per bitly click</th>
+        <th>Facebook likes per bitly click</th>
+        <th>Facebook shares per bitly click</th>
+        </tr>
+        <tr>
+        <th>News Organization</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>abcnews</th>
+              <td> 0.036917</td>
+              <td> 0.045097</td>
+              <td> 0.773255</td>
+              <td> 0.122000</td>
+            </tr>
+            <tr>
+              <th>ap</th>
+              <td> 0.078407</td>
+              <td> 0.168253</td>
+              <td> 0.345063</td>
+              <td> 0.124737</td>
+            </tr>
+            <tr>
+              <th>bbc</th>
+              <td> 0.124507</td>
+              <td> 0.229443</td>
+              <td> 1.674218</td>
+              <td> 0.226618</td>
+            </tr>
+            <tr>
+              <th>bostonglobe</th>
+              <td> 0.085831</td>
+              <td> 0.090406</td>
+              <td> 0.440436</td>
+              <td> 0.060554</td>
+            </tr>
+            <tr>
+              <th>cbsnews</th>
+              <td> 0.091343</td>
+              <td> 0.160942</td>
+              <td> 0.663655</td>
+              <td> 0.125372</td>
+            </tr>
+            <tr>
+              <th>cnn</th>
+              <td> 0.117169</td>
+              <td> 0.161787</td>
+              <td> 0.743328</td>
+              <td> 0.146012</td>
+            </tr>
+            <tr>
+              <th>dailymail</th>
+              <td> 0.085926</td>
+              <td> 0.138044</td>
+              <td> 0.305375</td>
+              <td> 0.083642</td>
+            </tr>
+            <tr>
+              <th>foxnews</th>
+              <td> 0.083563</td>
+              <td> 0.094659</td>
+              <td> 2.710953</td>
+              <td> 0.661291</td>
+            </tr>
+            <tr>
+              <th>huffingtonpost</th>
+              <td> 0.080466</td>
+              <td> 0.083731</td>
+              <td> 1.390209</td>
+              <td> 1.150219</td>
+            </tr>
+            <tr>
+              <th>latimes</th>
+              <td> 0.140971</td>
+              <td> 0.265342</td>
+              <td> 1.561624</td>
+              <td> 0.268176</td>
+            </tr>
+            <tr>
+              <th>msnbc</th>
+              <td> 0.174279</td>
+              <td> 0.291534</td>
+              <td> 1.811349</td>
+              <td> 0.238096</td>
+            </tr>
+            <tr>
+              <th>nbcnews</th>
+              <td> 0.119766</td>
+              <td> 0.177036</td>
+              <td> 0.542406</td>
+              <td> 0.096529</td>
+            </tr>
+            <tr>
+              <th>newsweek</th>
+              <td> 0.120774</td>
+              <td> 0.224866</td>
+              <td> 0.372624</td>
+              <td> 0.113102</td>
+            </tr>
+            <tr>
+              <th>npr</th>
+              <td> 0.104915</td>
+              <td> 0.129121</td>
+              <td> 1.342415</td>
+              <td> 0.244134</td>
+            </tr>
+            <tr>
+              <th>nytimes</th>
+              <td> 0.091615</td>
+              <td> 0.113453</td>
+              <td> 0.351794</td>
+              <td> 0.061440</td>
+            </tr>
+            <tr>
+              <th>reuters</th>
+              <td> 0.094633</td>
+              <td> 0.218980</td>
+              <td> 0.477018</td>
+              <td> 0.109050</td>
+            </tr>
+            <tr>
+              <th>slate</th>
+              <td> 0.038988</td>
+              <td> 0.044366</td>
+              <td> 0.066797</td>
+              <td> 0.025272</td>
+            </tr>
+            <tr>
+              <th>thedailybeast</th>
+              <td> 0.061600</td>
+              <td> 0.084940</td>
+              <td> 0.313304</td>
+              <td> 0.071559</td>
+            </tr>
+            <tr>
+              <th>time</th>
+              <td> 0.099225</td>
+              <td> 0.145994</td>
+              <td> 0.528061</td>
+              <td> 0.069238</td>
+            </tr>
+            <tr>
+              <th>usatoday</th>
+              <td> 0.088918</td>
+              <td> 0.140451</td>
+              <td> 2.341251</td>
+              <td> 0.394116</td>
+            </tr>
+            <tr>
+              <th>washingtonpost</th>
+              <td> 0.087305</td>
+              <td> 0.170458</td>
+              <td> 0.280762</td>
+              <td> 0.083621</td>
+            </tr>
+            <tr>
+              <th>wsj</th>
+              <td> 0.126071</td>
+              <td> 0.223185</td>
+              <td> 0.869757</td>
+              <td> 0.321035</td>
+            </tr>
+            <tr>
+              <th>yahoonews</th>
+              <td> 0.144062</td>
+              <td> 0.240997</td>
+              <td> 1.328506</td>
+              <td> 0.158942</td>
+            </tr>
+          </tbody>
+        </table>
+	<!-- End Table -->
+	<br/>
+	
 	
 	<p>Next, we use the Elbow Method to arrive at a reasonable k for the clustering algorithm.</p>
 	<img src="img/_Cluster/elbowMethodSocialMetric.png" alt="Elbow for Social Metrics KMeans Clustering Figure" align="center" class="img-responsive" />
