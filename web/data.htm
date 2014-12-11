@@ -107,8 +107,67 @@
 	<p class="bg-info" style="padding: 15px; margin: auto 30px;">See <a href="https://github.com/micahlanier/social-news/blob/master/src/urls/scrapeUrls.py">our URL traversal code</a> for a look at how we retrieved URL information.</p>
 
 	<h2>Data &ldquo;Wrangling&rdquo; &amp; Merging <small>Turn raw data into into something we <em>want</em>.</small></h2>
-
-
+	<p>We will now show an article example to illustrate how we are able to match articles from Twitter and Facebook posts</p>
+	
+	<hr/>
+	<h3><strong><a href="https://twitter.com/FoxNews/status/532568275498987520">Twitter:</a></strong></h3>
+	<img src="img/_Data/Fox News Comet Tweet.png" alt="Fox News Comet Tweet" align="center" class="img-responsive" />
+	<p>As seen above, the Twitter post has 281 retweets 313 favorites.</p>
+	<br/>
+	<hr/>
+	
+	<h3><strong><a href="https://bitly.com/1wlWdKh+">Twitter Bitly:</a></strong></h3>
+	<img src="img/_Data/Fox News Twitter Bitly Stats.png" alt="Fox News Tweet Bitly" align="center" class="img-responsive" />
+	<p>The Twitter link <a href="https://bitly.com/1wlWdKh">https://bitly.com/1wlWdKh</a> has been clicked 2,267 times.</p>
+	<br/>
+	<hr/>
+	
+	<h3><strong><a href="https://www.facebook.com/FoxNews/posts/10152671941536336">Facebook:</a></strong></h3>
+	<img src="img/_Data/Fox News Video Post.png" alt="Fox News Facebook" align="center" class="img-responsive" />
+	<p>The Facebook post has 16,956 likes and 5,396 shares.</p>
+	<br/>
+	<hr/>
+	
+	<h3><strong><a href="https://bitly.com/1u1UAmG+">Facebook Bitly:</a></strong></h3>
+	<img src="img/_Data/Fox News Facebook Bitly Stats.png" alt="Facebook Post Bitly" align="center" class="img-responsive" />
+	<p>The Facebook link <a href="https://bitly.com/1u1UAmG">https://bitly.com/1u1UAmG</a> has been clicked 4,299 times.</p>
+	<br/>
+	<hr/>
+	
+	<h3>Data Frame</h3>
+	<p>Using the information above, we are able to compile the data above into data frames such as the one shown below.</p>
+	
+	<table class="table table-condensed table-bordered">
+		<thead>
+			<tr>
+				<th>Twitter Bitly</th>
+				<th>Retweets</th>
+				<th>Favorites</th>
+				<th>Twitter Bitly Link Clicks</th>
+				<th>Facebook Bitly</th>
+				<th>Likes</th>
+				<th>Shares</th>
+				<th>Facebook Bitly Link Clicks</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>https://bitly.com/1wlWdKh</td>
+				<td>281</td>
+				<td>313</td>
+				<td>2,267</td>
+				<td>https://bitly.com/1u1UAmG</td>
+				<td>16,956</td>
+				<td>5,396</td>
+				<td>4,299</td>
+			</tr>
+			</tr>
+		</tbody>
+	</table>
+	
+	<p>As seen from the data frame, we are able to match the Twitter and Facebook posts to the same article. Therefore, for each article, we are able to track the social metrics on both platforms and use them to form the basis for our statistical analysis.</p>
+	
+	
 	<!-- End content editing. -->
 </div>
 
