@@ -72,11 +72,39 @@
 
 	<h3>Twitter</h3>
 
+	<p>To perform our analysis, we needed to turn this:</p>
+
+	<blockquote class="twitter-tweet" data-cards="hidden" lang="en"><p>Stumbles on Ebola and ISIS could drive Obama to shake up his foreign policy team <a href="http://t.co/LH3ZuW1zI0">http://t.co/LH3ZuW1zI0</a></p>&mdash; The New York Times (@nytimes) <a href="https://twitter.com/nytimes/status/527640820317696000">October 30, 2014</a></blockquote><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+	<p>Into an underlying data representation (JSON) that we can work with. Twitter&rsquo;s API is a breeze to work with, but features a frustrating 3,200 tweet limit when retrieving <a href="https://dev.twitter.com/rest/reference/get/statuses/user_timeline">recent posts on a user&rsquo;s timeline</a>. This turned our Twitter retrievals into a two-step process: download all recent tweets for each organization, and then &ldquo;scrape&rdquo; older tweets for more prolific posters (e.g., <a href="http://www.twitter.com/nytimes">@nytimes</a>, <a href="http://www.twitter.com/huffingtonpost">@huffingtonpost</a>) so as to obtain a dataset with a specific time range represented.</p>
+
+	<p>The first process was easy: <a href="https://twython.readthedocs.org/">Twython</a> can easily retrieve recent tweets. The second process was more complex. For organizations for which we required more tweets, we used <a href="http://www.crummy.com/software/BeautifulSoup/">Beautiful Soup</a> to scrape Twitter&rsquo;s <a href="http://www.twitter.com/search">search results</a> for each organization, and <a href="https://dev.twitter.com/rest/reference/get/statuses/show/%3Aid">retrieved tweets individually</a>. We did this (rather than saving scraped data) in order to retrieve as much information as possible about each tweet; in retrospect, we did not use any of this additional information and could have sped up the process with a pure scraping approach.</p>
+
+	<p>We saved all retrieved data as raw JSON (a persistent storage location may be <a href="next_steps.htm">in the cards</a>), and carefully scheduled our &ldquo;pulls&rdquo; to re-retrieve more recent tweets and update our observations about their retweet and favorite counts. Finally, we ran a consolidation process to remove any duplicate records before analysis.</p>
+
+	<p class="bg-info" style="padding: 15px; margin: auto 30px;">View our code on GitHub for <a href="https://github.com/micahlanier/social-news/blob/master/src/twitter/downloadRawTweets.py">retrieving recent tweets</a> (within the 3,200 tweet limit) and <a href="https://github.com/micahlanier/social-news/blob/master/src/twitter/scrapeOlderTweets.py">scraping older tweets</a>. The former can traverse a list of accounts; the latter must be run for a single account. <a href="https://github.com/micahlanier/social-news/blob/master/src/twitter/consolidateRawTweets.py">This script</a> consolidates all tweets before analysis.</p>
+
 	<h3>Facebook</h3>
+
+	<p>Once again, we&rsquo;re tasked with turning a Facebook post:</p>
+
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/en_US/all.js#xfbml=1"; fjs.parentNode.insertBefore(js, fjs); }(document, 'script', 'facebook-jssdk'));</script>
+<div class="fb-post" data-href="https://www.facebook.com/nytimes/posts/10150462841769999" data-width="466"><div class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/nytimes/posts/10150462841769999">Post</a> by <a href="https://www.facebook.com/nytimes">The New York Times</a>.</div></div>
+
+	<p>Into raw JSON that we can store and manipulate. This turns out to be an easier problem than retrieving tweets: publishers post less often on Facebook, and the company did not enforce API limits that hindered our efforts to draw a large dataset of posts. To retrieve this data, our Python scripts queried the appropriate <a href="https://developers.facebook.com/docs/graph-api/reference/v2.2/user/feed/">Graph API</a> for recent time ranges, for each organization. As with Twitter, we retrieved this data progressively (to ensure up-to-date like, comment, and share counts), and consolidated the latest data we had for each post before analysis.</p>
+
+	<p class="bg-info" style="padding: 15px; margin: auto 30px;">Check out our <a href="https://github.com/micahlanier/social-news/blob/master/src/fb/downloadRawFbPosts.py">post retrieval</a> and <a href="https://github.com/micahlanier/social-news/blob/master/src/fb/consolidateRawFbPosts.py">consolidation</a> code on GitHub.</p>
 
 	<h3>Bitly</h3>
 
+	<p>Much like the above steps, we relied on Bitly&rsquo;s API to retrieve <a href="http://dev.bitly.com/link_metrics.html#v3_link_clicks">link clicks</a> for all Bitly links that we found on Twitter and Facebook. Though Bitly provides very fine resolution (down to the hour) of click data (see <a href="https://bitly.com/1tbvqmD+">an example</a>), we restricted ourselves to aggregate figures. Our process was simple: we identified all such links in each post (whether they were bit.ly links or used custom domains like cnn.it) and queried the API for their click figures.</p>
+
+	<p class="bg-info" style="padding: 15px; margin: auto 30px;">Once again, our Bitly API retrieval code is <a href="https://github.com/micahlanier/social-news/blob/master/src/bitly/getBitlyTraffic.py">on GitHub</a>. It reads consolidated Facebook and Twitter posts and queries the API for anything it has not yet seen (allowing it to be run progressively over time).</p>
+
 	<h3>URL Destinations</h3>
+
+	<p class="bg-info" style="padding: 15px; margin: auto 30px;">See <a href="https://github.com/micahlanier/social-news/blob/master/src/urls/scrapeUrls.py">our URL traversal code</a> for a look at how we retrieved URL information.</p>
 
 	<h2>Data &ldquo;Wrangling&rdquo; &amp; Merging <small>Turn raw data into into something we <em>want</em>.</small></h2>
 
