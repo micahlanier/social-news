@@ -16,6 +16,9 @@
 		<!-- Custom styles for this template -->
 		<link href="./css/navbar-fixed-top.css" rel="stylesheet">
 
+		<!-- Custom styles for the social-news project -->
+		<link href="./css/social-news.css" rel="stylesheet">
+
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		    <!--[if lt IE 9]>
 		      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -63,8 +66,49 @@
 		<p>The textual nature of social media provides a rich corpus for analysis. These represent our efforts to extract meaning from the words we collected.</p>
 	</div>
 
-	<h2>Sentiment Analysis <small>What makes 140 characters positive or negative?</small></h2>
-	<p>Stuff here.</p>
+	<h2>Sentiment Analysis <small>What makes 140 characters <em>positive</em> or <em>negative</em>?</small></h2>
+	<p>We performed <a href="http://en.wikipedia.org/wiki/Sentiment_analysis">sentiment analysis</a> on our collection of tweets and posts in an attempt to extract meaningful measurements of &ldquo;positivity&rdquo; and &ldquo;negativity&rdquo; (somewhat subjectively defined). To accomplish this, we drew upon <a href="http://www.nltk.org/">NLTK</a>&rsquo;s sophisticated textual toolset and the <a href="http://wordnet.princeton.edu/">WordNet</a> and <a href="http://sentiwordnet.isti.cnr.it/">SentiWordNet</a> databases for word sense disambiguation and sentiment classification (respectively).</p>
+
+	<p>Note that SentiWordNet uses a <a href="http://nmis.isti.cnr.it/sebastiani/Publications/LREC06.pdf">semi-supervised classification mechanism</a> that does not always produce intuitive results. Our classifications also rely on aggregations of word-wise classifications, rather than producing a &ldquo;holistic&rdquo; sentiment classification like that which a human would produce. The implications of this process (and some odd results that it produces) are discussed below.</p>
+
+	<p>To obtain useful data, we implemented a straightforward process of traversing every tweet and Facebook post we have collected, used NLTK to perform sentiment scoring and classification, and stored the results for later use. Interested readers ought to refer to our source code.</p>
+
+	<p class="bg-info" style="padding: 15px; margin: auto 30px;">Our sentiment clasification code is (of course) <a href="https://github.com/micahlanier/social-news/blob/master/src/sentiment/sentiment.py">available on GitHub</a>. For those interested, the following analysis is based on <a href="http://nbviewer.ipython.org/github/micahlanier/social-news/blob/master/src/sentiment/sentimentExploration.ipynb">exploratory analysis</a> that is stored in the same repository.</p>
+
+	<h3>Scoring &amp; Classification Results</h3>
+
+	<p>A quick analysis of classified tweets reveals some intuitive results. The following tweet was retweeted by <em>Slate</em>, and represents the most "negative" tweet that we observed:</p>
+
+	<blockquote class="twitter-tweet" data-cards="hidden" lang="en"><p>.<a href="https://twitter.com/KevinNR">@KevinNR</a>&#39;s sex abuse allegations against <a href="https://twitter.com/lenadunham">@lenadunham</a>? Insulting, unscientific, dangerous, and dead wrong. <a href="http://t.co/tIvXtMATKZ">http://t.co/tIvXtMATKZ</a> <a href="https://twitter.com/Slate">@Slate</a></p>&mdash; Mark Joseph Stern (@mjs_DC) <a href="https://twitter.com/mjs_DC/status/529688113812373504">November 4, 2014</a></blockquote>
+
+	<p>This tweet from <em>CBS News</em> was the most positive:</p>
+
+	<blockquote class="twitter-tweet" lang="en"><p>Major supermarket chain to start ranking fruits and vegetables - which are &quot;good,&quot; &quot;better,&quot; &quot;best&quot;? <a href="http://t.co/7qRbiOE9bM">http://t.co/7qRbiOE9bM</a></p>&mdash; CBS News Health (@CBSHealth) <a href="https://twitter.com/CBSHealth/status/522420844845604864">October 15, 2014</a></blockquote>
+
+	<p>The reasons for each classification appear obvious. The first is loaded with words that would intuitively be considered quite negative (<em>insulting</em>, <em>dangerous</em>), while the second explicitly lists positive words. Still, our classification method does produce some "head scratching" results. Some of the most negative tweets we retrieved were variations on the following quote from President Obama:</p>
+
+	<blockquote class="twitter-tweet" lang="en"><p>Obama: &quot;Scripture tells us that we shall not oppress a stranger, for we know the heart of a stranger. We were strangers once, too.&quot;</p>&mdash; Huffington Post (@HuffingtonPost) <a href="https://twitter.com/HuffingtonPost/status/535602978703818752">November 21, 2014</a></blockquote>
+	<script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+	<p>The intention of the quote was clearly positive and meant to encourage empathy, but it was formed from an aggregation words that SentiWordNet classifies as negative. Thus, our approach is not without drawbacks, but we hope to derive at least some &ldquo;signal&rdquo; from our sentiment classifications.</p>
+
+	<p>Aggregations of sentiment behavior demonstrate differences between news organizations. The following charts illustrate organizations' proportions of negative and positive posts on each social network, ordered by the difference between the two categories. Organizations with low proportions of either category may be considered more &ldquo;neutral&rdquo; (this does not imply journalistic neutrality).</p>
+
+	<img src="img/sentiment/twitter_org_sentiment.png" class="img-responsive center-block" />
+
+	<img src="img/sentiment/facebook_org_sentiment.png" class="img-responsive center-block" />
+
+	<p>The data above show several interesting patterns:</p>
+	
+	<ul>
+		<li>Several publishers show net negative posts on Twitter: more of their posts are classified as negative than positive. No organization falls into this category on Facebook.</li>
+		<li>Aggregate positivity on Facebook is much higher. This is likely attributable to the lack of a 140-character message limit: because not all words have extreme positive/negative sentiment values, or even <em>any</em> sentiment scores at all, many tweets are classified as neutral.</li>
+		<li>A cursory examination suggests that some organizations remain in similar sentiment &quot;tiers&quot; across networks (e.g., <em>Slate</em>, the <em>Wall Street Journal</em>). Others do not: <em>Reuters</em> (for example) is net-negative on Twitter but in the upper third of positivty on Facebook. These differences may lend insight into the organizations where presences on each network are controlled by different teams. This is not uncommon: according to its leaked <a href="http://www.niemanlab.org/2014/05/the-leaked-new-york-times-innovation-report-is-one-of-the-key-documents-of-this-media-age/">2014 Innovation Report</a>, at the time of publication the firm&#39;s newsroom handled Twitter communications, while a business-side unit managed the company&#39;s Facebook presence.</li>
+	</ul>
+
+	<p>This analysis demonstrates further utility in our <a href="clustering.htm">clustering</a> and <a href="prediction.htm">predictive analyses</a>.</p>
+
+	<hr />
 	
 	<h2>Topic Modeling <small>What are publishers talking about?</small></h2>
 	<p>Topic modeling is an automatic way to generate a topic for an article.
