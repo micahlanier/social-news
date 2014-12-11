@@ -104,10 +104,13 @@
 
 	<h3>URL Destinations</h3>
 
+	<p>In order to determine which links have been reposted and which have been posted on <em>both</em> social networks, we had to determine where each link eventually leads. We could not rely just on the raw link from each tweet/post, because many publishers alter shortened links with each post (allowing them to track clicks more easily). And even then, we could not just query Bitly&rsquo;s API for the link destination, because it might traverse other pages (e.g., <a href="http://trib.al/">trib.al</a> before landing at a destination. And finally, we wished to design a process that would be non-disruptive: it mustn&rsquo;t trigger increases in Bitly click counts, nor should it disruptively query publishers&rsquo; websites.</p>
+
+	<p>To figure out where links lead, we designed our process to make HTTP <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html">HEAD</a> requests (to not disrupt click counts) and avoid automatic redirections. We then followed redirections &ldquo;manually&rdquo; until discovering what we were confident to be the final destination of the redirection chain (the publisher&rsquo;s website). Without following that URL (to avoid unnecessary requests), we moved on to the next link. This process took some time to debug but eventually allowed us to gather information about almost 200,000 social media links.</p>
+
 	<p class="bg-info" style="padding: 15px; margin: auto 30px;">See <a href="https://github.com/micahlanier/social-news/blob/master/src/urls/scrapeUrls.py">our URL traversal code</a> for a look at how we retrieved URL information.</p>
 
 	<h2>Data &ldquo;Wrangling&rdquo; &amp; Merging <small>Turn raw data into into something we <em>want</em>.</small></h2>
-
 
 	<!-- End content editing. -->
 </div>
