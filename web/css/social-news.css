@@ -32,3 +32,9 @@
 		font-size: 63px;
 	}
 }
+
+/* Center tweets. */
+iframe.twitter-tweet { margin-left: auto !important; margin-right: auto !important; }
+
+/* Ensure space at bottom. */
+body { margin-bottom: 24px; }

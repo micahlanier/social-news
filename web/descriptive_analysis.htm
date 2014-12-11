@@ -16,6 +16,9 @@
 		<!-- Custom styles for this template -->
 		<link href="./css/navbar-fixed-top.css" rel="stylesheet">
 
+		<!-- Custom styles for the social-news project -->
+		<link href="./css/social-news.css" rel="stylesheet">
+
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		    <!--[if lt IE 9]>
 		      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -67,7 +70,34 @@
 
 <div class="container">
 	<!-- Edit main content here. -->
+
+	<h2>At a High Level</h2>
 	<p>Content here.</p>
+
+	<hr />
+
+	<h2 id="dates-and-times">Dates &amp; Times <small>When do publishers post?</small></h2>
+
+	<p>Properly timing posts is an important part of audience engagement. Some publishers hire <a href="http://www.socialflow.com/">outside firms</a> to optimize their messaging, and Bitly themselves have <a href="http://blog.bitly.com/post/22663850994/time-is-on-your-side">published research</a> into how best to time links. This issue turns out to be quite relevant for our <a href="prediction.htm">predictive analysis</a> as well.</p>
+
+	<p>Anyone familiar with working schedules and news cycles can surmise that social media post volume declines over the weekend. This pattern holds for most publishers, though some (the <em>New York Times</em> and the <em>Daily Mail</em>) show little or no dropoff.</p>
+
+	<img src="img/descriptive_analysis/post_volume_by_day.png" alt="Social media post volume by day" class="img-responsive center-block" />
+
+	<p>A similarly intuitive pattern holds for posting time throughout the day. Most publishers show a rather rapid &ldquo;ramp-up&rdquo; at the start of the workday, and post less as the day (and night) drags on.</p>
+
+	<img src="img/descriptive_analysis/post_volume_by_time_agg.png" alt="Post volume by time, aggregated" class="img-responsive center-block" />	
+
+	<p>But <em>particular</em> media organizations often post their content at very different times of day. As observed, evenings typically show a decline in post volume&mdash;but this may be either gradual (<em>Time</em>) or precipitous (<em>Newsweek</em>). Some publishers follow clearly international schedules that appear lackadaiscal toward cultivating an American audience (<em>AFP</em>, <em>The Guardian</em>). There are very few consistent patterns for nighttime posting.</p>
+
+	<img src="img/descriptive_analysis/post_volume_by_time.png" alt="Post volume by time for all publishers" class="img-responsive center-block" />
+
+	<p style="margin-top: 2em">Finally, we performed little investigation of minute-by-minute posting patterns, as the particular <em>minute</em> of a post yielded little predictive power in our regression analysis. But we did note an interesting pattern among Facebook posts. News organizations have a clear habit of posting at the top of each hour and half-hour:</p>
+
+	<img src="img/descriptive_analysis/fb_post_volume_by_time_agg.png" alt="Facebook post volume by time, aggregated" class="img-responsive center-block" />
+
+	<p>The pattern was stronger among organizations for which we could <em>not</em> ascertain SocialFlow usage (i.e., those organizations that do not direct their links through <a href="http://www.trib.al/">trib.al</a>), but was still present for both groups.</p>
+	
 	<!-- End content editing. -->
 </div>
 
