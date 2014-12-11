@@ -66,14 +66,14 @@
 		<p>The textual nature of social media provides a rich corpus for analysis. These represent our efforts to extract meaning from the words we collected.</p>
 	</div>
 
-	<h2>Sentiment Analysis <small>What makes 140 characters <em>positive</em> or <em>negative</em>?</small></h2>
+	<h2 id="sentiment-analysis">Sentiment Analysis <small>What makes 140 characters <em>positive</em> or <em>negative</em>?</small></h2>
 	<p>We performed <a href="http://en.wikipedia.org/wiki/Sentiment_analysis">sentiment analysis</a> on our collection of tweets and posts in an attempt to extract meaningful measurements of &ldquo;positivity&rdquo; and &ldquo;negativity&rdquo; (somewhat subjectively defined). To accomplish this, we drew upon <a href="http://www.nltk.org/">NLTK</a>&rsquo;s sophisticated textual toolset and the <a href="http://wordnet.princeton.edu/">WordNet</a> and <a href="http://sentiwordnet.isti.cnr.it/">SentiWordNet</a> databases for word sense disambiguation and sentiment classification (respectively).</p>
 
 	<p>Note that SentiWordNet uses a <a href="http://nmis.isti.cnr.it/sebastiani/Publications/LREC06.pdf">semi-supervised classification mechanism</a> that does not always produce intuitive results. Our classifications also rely on aggregations of word-wise classifications, rather than producing a &ldquo;holistic&rdquo; sentiment classification like that which a human would produce. The implications of this process (and some odd results that it produces) are discussed below.</p>
 
 	<p>To obtain useful data, we implemented a straightforward process of traversing every tweet and Facebook post we have collected, used NLTK to perform sentiment scoring and classification, and stored the results for later use. Interested readers ought to refer to our source code.</p>
 
-	<p class="bg-info" style="padding: 15px; margin: auto 30px;">Our sentiment clasification code is (of course) <a href="https://github.com/micahlanier/social-news/blob/master/src/sentiment/sentiment.py">available on GitHub</a>. For those interested, the following analysis is based on <a href="http://nbviewer.ipython.org/github/micahlanier/social-news/blob/master/src/sentiment/sentimentExploration.ipynb">exploratory analysis</a> that is stored in the same repository.</p>
+	<p class="bg-info">Our sentiment clasification code is (of course) <a href="https://github.com/micahlanier/social-news/blob/master/src/sentiment/sentiment.py">available on GitHub</a>. For those interested, the following analysis is based on <a href="http://nbviewer.ipython.org/github/micahlanier/social-news/blob/master/src/sentiment/sentimentExploration.ipynb">exploratory analysis</a> that is stored in the same repository.</p>
 
 	<h3>Scoring &amp; Classification Results</h3>
 
