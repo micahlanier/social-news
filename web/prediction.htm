@@ -16,6 +16,9 @@
 		<!-- Custom styles for this template -->
 		<link href="./css/navbar-fixed-top.css" rel="stylesheet">
 
+		<!-- Custom styles for the social-news project -->
+		<link href="./css/social-news.css" rel="stylesheet">
+
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		    <!--[if lt IE 9]>
 		      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -59,22 +62,95 @@
 
 <div class="container">
 	<div class="jumbotron">
-		<h1>Predictive Analysis</h1>
+		<h1>Predictive Models</h1>
 		<p>Social media strategy remains a black box for news organizations young and old. What can 140 characters tell us about how publishers connect with their audiences?</p>
 	</div>
 </div>
 
 <div class="container">
 	<!-- Edit main content here. -->
-	<p>Background about prediction.</p>
+	<p>Our predictive efforts aim to address two tasks: determining the factors that &ldquo;explain&rdquo; variation in social media outcomes (clicks, retweets, likes, etc.) and identifying methods for predicting those outcomes in advance. We only considered variables that would be known to organizations at the time that they post their stories (e.g., we did not attempt to predict clicks using retweets). CS 109 focused most on supervised classification methods, so we took this opportunity to learn more about and implement several regression models.</p>
 
-	<p>Notes on posing the predictive problem. We included things people know when posting.</p>
+	<p class="bg-info">The content on this page derives from source code in our repository. See our <a href="http://nbviewer.ipython.org/github/micahlanier/social-news/blob/master/src/prediction/predictiveModels.ipynb">predictive model generation</a> notebook for generation and comparisons of models. Several other notebooks contain information about strategic implications surrounding <a href="http://nbviewer.ipython.org/github/micahlanier/social-news/blob/master/src/exploration/timeExploration.ipynb">post timing</a>, <a href="http://nbviewer.ipython.org/github/micahlanier/social-news/blob/master/src/prediction/media.ipynb">media</a> (photos/videos that accompany posts), and <a href="http://nbviewer.ipython.org/github/micahlanier/social-news/blob/master/src/prediction/sentiment.ipynb">sentiment</a> (you may wish to review our <a href="nlp.htm#sentiment-analysis">sentiment analysis overview</a>).</p>
 
-	<h2>Clicks <small>Who clicks on what?</small></h2>
+	<h2>Predictive Models <small>What can we predict?</small></h2>
 
-	<h2>Retweets <small>How does content spread on Twitter?</small></h2>
+	<p>When fitting models, we focused our efforts on <a href="http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.RidgeCV.html">Ridge Regression</a> and <a href="http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html">Random Forest Regression</a> models. Due to fundamental differences between both social networks (and their asymmetric featuresets), we fit separate models between both networks when predicting clicks.</p>
 
-	<h2>Likes <small>Why do people click &#128077;?</small></h2>
+	<h3>Predicting Clicks</h3>
+
+	<p>Though it is important to not treat pageviews as the <em>sine qua non</em> of engagement on social media, they are a primary measurement of success in social media promotion. News organizations are ultimately &ldquo;selling&rdquo; their content, and influencing readers to consume it is a challenge in the age of social media. To attempt to ascertain what drives link traffic, we treated Bitly clicks as our dependent variable and fit a number of (potential) explanatory features. It bears noting that Bitly clicks are not a perfect proxy for link traffic in all cases: many links are posted without Bitly links, and we are unable to observe their traffic.</p>
+
+	<p>Some features that we selected for modeling:</p>
+	<ul>
+		<li>Time of day (with appropriate oscillation functions) and day of week;</li>
+		<li>Organization information (publisher dummy variables, audience size measures)</li>
+		<li><a href="nlp.htm#sentiment-analysis">Sentiment scores and classifications</a>;</li>
+		<li>Associated "media" information (whether or not the post has an associated photo or video).</li>
+	</ul>
+
+	<p><strong>This section focuses on the model fitting process. Notable features are discussed in our <a href="#strategic-findings">strategic findings</a> below.</strong></p>
+
+	<p>Fit statistics for each model <em>against held-out testing data</em> (10% of the dataset) are as follows. Note that clicks feature a long-tailed distribution that necessitated log transformation for regression (transformed values are approximately normally distributed).</p>
+
+	<table class="table table-bordered" style="width: 80%; margin: 1em auto;">
+		<thead><tr>
+			<th>Model</th>
+			<th>Social Network</th>
+			<th class="text-right">R<sup><small>2</small></sup></th>
+			<th class="text-right">Mean Absolute Error (Log Scale)</th>
+		</tr></thead>
+		<tbody>
+			<tr><td rowspan="2">Ridge Regression</td><td>Twitter</td><td class="text-right">0.528</td><td class="text-right">0.707</td></tr>
+			<tr><td>Facebook</td><td class="text-right">0.248</td><td class="text-right">1.202</td></tr>
+			<tr><td rowspan="2">Random Forest</td><td>Twitter</td><td class="text-right">0.509</td><td class="text-right">0.706</td></tr>
+			<tr><td>Facebook</td><td class="text-right">0.248</td><td class="text-right">1.226</td></tr>
+		</tbody>
+	</table>
+
+	<p>Given the similarities in feature set between Twitter and Facebook models, we expected similar results. Instead, the Facebook model drastically underperformed the Twitter model. <strong>Our best theory is that Twitter's reverse-chronological timeline provides more consistent outcomes, while Facebook&rsquo;s algorithmic system (that selectively displays content, based only partially on its age) introduces variability that we cannot capture.</strong> Further, our naïve intuition held that the Random Forest model would outperform the linear regression model; that turned out to not be the case.</p>
+
+	<p>Though the R<sup><small>2</small></sup> from our Twitter model might be considered respectable, a typical estimate still misses the actual click count by approximately 70% (given the log transformation). The following charts visualize this performance, comparing predicted values to actual outcomes:</p>
+
+	<img src="img/prediction/clicks_tw_regression.png" class="img-responsive center-block" />
+
+	<img src="img/prediction/clicks_fb_regression.png" class="img-responsive center-block" />
+
+	<h3>Predicting Retweets &amp; Likes</h3>
+
+	<p>In an effort to reach beyond pageviews as measure of social success, we attempted to &ldquo;recycle&rdquo; out featureset and use it to predict (1) Twitter retweets and (2) Facebook likes. Both services have alternative measures of engagement (Twitter favorites; Facebook shares and comments) that would make for interesting modeling, but these two are oft-considered the two most important for engagement. As one might expect, they also correlate closely with clicks: each comparison features a correlation coefficient of approximately 0.6.</p>
+
+	<p>Given strong correlation, we were not particularly optimistic about obtaining strong predictive power. Our <strong>retweet</strong> model validated that concern, and featured accuracy roughly in-line with the predictive models above.</p>
+
+	<p>Our effort to predict <strong>likes</strong> produced some surprising results:</p>
+
+	<table class="table table-bordered" style="width: 50%; margin: 1em auto;">
+		<thead><tr>
+			<th>Model</th>
+			<th class="text-right">R<sup><small>2</small></sup></th>
+			<th class="text-right">Mean Absolute Error (Log Scale)</th>
+		</tr></thead>
+		<tbody>
+			<tr><td>Ridge Regression, Facebook Likes</td><td class="text-right">0.542</td><td class="text-right">0.863</td></tr>
+		</tbody>
+	</table>
+
+	<p>These results proved far more promising than our Facebook click model. A causal theory is discussed with our &ldquo;strategic findings&rdquo; below.</p>
+
+	<h2 id="strategic-findings">Strategic Findings <small>What can publishers <em>do</em> with this information?</small></h2>
+
+	<h3>Post Timing</h3>
+
+	<p></p>
+
+	<h3>Posting Days</h3>
+
+	<p></p>
+
+	<h3>Media on Twitter &amp; Facebook</h3>
+
+	<p></p>
+
 	<!-- End content editing. -->
 </div>
 
