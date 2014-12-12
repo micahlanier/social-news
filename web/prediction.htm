@@ -149,7 +149,44 @@
 
 	<h3>Post Timing</h3>
 
-	<p>The importance of post timing is clear on the plots above: only audience size is judged more important for predicting link performance.</p>
+	<p>The importance of post timing is clear on the plots above: only audience size is judged more important for predicting link performance. Prior analysis shows that <a href="descriptive_analysis.htm#dates-and-times">posting activity</a> on both networks tends to peak around 12:00 p.m. Eastern:</p>
+
+	<img src="img/descriptive_analysis/post_volume_by_time_agg.png" alt="Post volume by time, aggregated" class="img-responsive center-block" />
+
+	<p>But is this practice efficient? Some news organizations post somewhat consistently at all hours of the day; others appear to adhere rigidly to working schedules. Our Ridge Regression model offers us the opportunity to hold all else but time of day constant, and predict link traffic based on when an arbitrary post was published.</p>
+
+	<div class="row">
+		<div class="col-md-7">
+			<img src="img/prediction/link_performance_tod_tw.png" alt="" class="img-responsive center-block" />
+			<img src="img/prediction/link_performance_tod_fb.png" alt="" class="img-responsive center-block" />
+		</div>
+		<div class="col-md-5">
+			<h5>Notes on Interpretation</h5>
+			<p>The proportional difference in expected link traffic between posting at two times (on either line) is the difference in those points&rsquo; <em>y</em>-axis values.</p>
+			<hr />
+			<h5>Notes on Fit</h5>
+			<p>Regression (not Random Forest) models were fit using both sine/cosine and third-degree polynomial terms for time of day and rely on the OLS method and regularization process to determine the important combinations thereof.</p>
+			<p>Including all terms enables description of cyclic effects. The strongest model was fit using both categories of terms, and manual inspection of models that left out either group showed counterintuitive (and weakly predictive) results.</p>
+			<p>The time effect for Twitter does not look great, as it does not appear to maintain cyclicality between 11:59 p.m. and midnight. The Facebook model looks much more promising.</p>
+		</div>
+	</div>
+
+	<p><strong>To understand the magnitude of this effect, consider two times: a Facebook post at 6 p.m. is expected to receive 26% more posts than the same post at 6 a.m. (0.289-0.021).</strong></p>
+
+	<p>The above suggests that (1) some organizations that post heavily at night might benefit from reconsidering their posting strategies, and (2) news organizations may be forgoing valuable traffic by &ldquo;peaking&rdquo; too early in the afternoon. Still, there are two key objections to either conclusion:</p>
+
+	<ol>
+		<li>This may be a case of reverse causality. Publishers may be "dumping" low-impact stories on off-peak hours, particularly. Those stories might not attract attention during peak hours anyway.</li>
+		<li>Publishers may simply be <em>reposting</em> stories at night and other off-peak hours, and are already posting important material at times that better maximize click traffic.</li>
+	</ol>
+
+	<p>Unfortunately, we are not confident that our prediction dataset can detect the first phenomenon, and it remains a critical consideration when applying this analysis to posting strategy. Incorporation of topic modeling into our predictive models may help, but has not been attempted. We can, however, use URL information to determine if &ldquo;graveyard shift&rdquo; posts are reposts. The following chart measures reposting activity for both networks, comparing content posted between midnight and 6am to the rest of the day:</p>
+
+	<img src="img/prediction/repost_volume_tod.png" class="img-responsive center-block" />
+
+	<p>Repost volume appears to differ little between the two time periods and favors a view that valuable, original content is being wasted through maltimed posting. But the first objection above (about news "dumping") remains valid (these may be inherently low-value stories), and further analysis ought to address it. Still, from the observed posting schedules, many organizations appear apt to post news stories according to their own workdays. Evidence suggests that they might benefit from a more data-driven strategy.</p>
+
+	<p>Interestingly, this analysis differs somewhat from <a href="http://blog.bitly.com/post/22663850994/time-is-on-your-side">Bitly&rsquo;s analysis of the same topic</a>. Their analysis found the same (intuitive) effect for late-night/early-morning posts. But our "peak" time range for predicting link traffic on each network fell slightly earlier: around 12pm for both networks, against Bitly's estimates of approximately 2pm. There are many possible reasons for this discrepancy, including the other variables for which our model controls (Bitly's analysis does not appear to control for anything) and the very specific organizational and content focus of our analysis.</p>
 
 	<h3>Posting Days</h3>
 
