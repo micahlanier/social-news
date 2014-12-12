@@ -137,19 +137,75 @@
 
 	<p>These results proved far more promising than our Facebook click model. A causal theory is discussed with our &ldquo;strategic findings&rdquo; below.</p>
 
+	<hr />
+
 	<h2 id="strategic-findings">Strategic Findings <small>What can publishers <em>do</em> with this information?</small></h2>
+
+	<p>Our Random Forest models assign the following rankings to Twitter and Facebook posts when predicting clicks. Logistic regression features are somewhat more complex and will be discussed as needed below.</p>
+
+	<img src="img/prediction/rf_importance_tw.png" class="img-responsive center-block" />
+
+	<img src="img/prediction/rf_importance_fb.png" class="img-responsive center-block" />
 
 	<h3>Post Timing</h3>
 
-	<p></p>
+	<p>The importance of post timing is clear on the plots above: only audience size is judged more important for predicting link performance.</p>
 
 	<h3>Posting Days</h3>
 
-	<p></p>
+	<p>As our descriptive analysis shows, <a href="descriptive_analysis.htm#dates-and-times">publishers tend to post little on weekends</a>. Our linear regression and Random Forest models appear to disagree about the importance of this observation as it affects click outcomes. The Random Forest model above assigns little importance to day-of-week. <strong>In contrast, Ridge Regression estimates that weekend posts show predicted increases in clicks of anywhere from 9 - 40% (depending on the days compared).</strong> The following charts break down this predicted effect by day and by social network.</p>
+
+	<img src="img/prediction/tw_click_performance_by_day.png" class="img-responsive center-block" />
+
+	<img src="img/prediction/fb_click_performance_by_day.png" class="img-responsive center-block" />
+
+	<p>Aggregate data suggest advantages to posting on weekends as well. Controlling <strong>only</strong> for audience size, Sundays appear to be best for traffic, and Saturdays outperform several (but not all) weekdays:</p>
+
+	<img src="img/prediction/normalized_clicks_per_day.png" class="img-responsive center-block" />
+
+	<p>Of course, there are natural limits to the sorts of content that publishers can (or want) to post on weekends. As weekends are largely removed from traditional news and publishing cycles, organizations may be forced to carefully curate recent news stories, archival material, and feature reporting in order to successfully cultivate a weekend audience. Evidence shows that they are already reposting content more often on weekends:</p>
+
+	<img src="img/prediction/repost_volume.png" class="img-responsive center-block" />
+
+	<p><strong>In sum, publishers tend to post little on weekends, despite evidence of significant returns to doing so. Weekend posting thus appears to be a significant untapped source of potential web traffic.</strong> The unique nature of such news content may make a weekend posting strategy ultimately infeasible: perhaps the content available for posting on weekends is simply unattractive to readers. It may also be that the benefits of weekend posting are driven by the relative paucity of news content available on weekends: weekend posts have little competition (but for a smaller audience), and this strategy would not scale well under wide adoption. We are hopeful that future research (or publisher experimentation) may hold the final answer to this question.</p>
+	
+	<p>Interestingly, our analysis once again differs from <a href="http://blog.bitly.com/post/22663850994/time-is-on-your-side">Bitly&rsquo;s</a>: they note a lull in aggregate click behavior on weekends. And as above, it must be noted that our analysis differs from theirs in our controls and our focus on news organizations.</p>
 
 	<h3>Media on Twitter &amp; Facebook</h3>
 
-	<p></p>
+	<p>Facebook and Twitter (in varying ways) allow users to post photos and video with their content. The exact manner in which this changes user interaction with the post is dependent on the network, and has distinct implications for the number of clicks a link contained therein will receive.</p>
+
+	<h4>Photos on Twitter</h4>
+
+	<p>Twitter photos are primarily &ldquo;complementary.&rdquo; Consider the following from the <em>New York Times</em>:</p>
+
+	<blockquote class="twitter-tweet" lang="en"><p>36 hours in Dublin <a href="http://t.co/duuWzQndvG">http://t.co/duuWzQndvG</a> <a href="http://t.co/E5eCtHcJI8">pic.twitter.com/E5eCtHcJI8</a></p>&mdash; The New York Times (@nytimes) <a href="https://twitter.com/nytimes/status/534189973378183168">November 17, 2014</a></blockquote><script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+	<p>As observed, photos &ldquo;accompany&rdquo; tweets, which retain much of their prior appearance. They have enhanced placement in user timelines, and can be enlarged to show more content (offering another avenue of interaction to Twitter users). But what is this worth to a publisher? Our linear regression model can tell us. <strong>A post with a photo is estimated to garner 53% more clicks than the same post without a photo, <em>ceteris paribus</em>.</strong></p>
+
+	<p>The aggregate data bear out this relationship. On average, tweets with photos receive far more link clicks per follower (to adjust for audience size) than those without:</p>
+	
+	<img src="img/prediction/tw_clicks_per_follower_photo.png" class="img-responsive center-block" />
+
+	<p>Notably, this relationship also extends to predicting retweets (and thus potentially to measures of &ldquo;virality&rdquo;). In that model, a photo predicts a 51% increase in retweets.</p>
+
+	<p>Thus, in the aggregate <em>and</em> when controlling for other variables, photos thus appear as a major driver of link traffic. This phenomenon would make for a fascinating vector for future research.</p>
+
+	<h4>Photos &amp; Video on Facebook</h4>
+
+	<p>Media (i.e., videos and photos) on Facebook are more interactive and constitute an interaction paradigm wholly apart from the links they accompany. Consider a <em>Fox News</em> video:</p>
+
+	<img src="img/prediction/foxnews_video.png" class="img-responsive center-block" />
+
+	<p>The link itself is de-emphasized, hidden under the virtual &ldquo;fold&rdquo; of the &ldquo;See More&rdquo; link. One might expect that Facebook videos (and photos, which function similarly) will show diminished click counts, all else equal. This is indeed the case: <strong>our linear regression model predicts an average 76% decrease in clicks for links published as part of posts that primarily feature a photo or video</strong>. This result is perfectly intuitive: if users cannot easily see links, they will not follow them. And aggregate data support this conclusion:</p>
+
+	<img src="img/prediction/fb_clicks_per_follower_medium.png" class="img-responsive center-block" />
+
+	<p>Non-photo and non-video posts (grouped into the &ldquo;other&rdquo; category) significantly outperform links with such media. And there appears to be little benefit to &ldquo;likes&rdquo; from such media-heavy posts, as our linear regression model predicts no significant gain in likes for such posts.</p>
+
+	<p><strong>Still, it is reasonable to assume that publishers post videos and photos for a reason. At the time the screenshot of the above video was taken, it had achieved more than 100,000 views in three hours (according to Facebook itself). Even if videos do not necessarily lead to people visiting publishers&rdquo; websites, it is clear that they garner engagement from Facebook users. The value of such interaction to each organization would make for a fascinating topic of further analysis. This problem recognizes that engagement now exists far beyond individual news organizations&rsquo; websites and apps, and illustrates the extent to which social media themselves have become new frontiers in audience engagement.</strong></p>
+
+
 
 	<!-- End content editing. -->
 </div>
