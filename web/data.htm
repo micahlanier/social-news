@@ -85,7 +85,7 @@
 
 	<p>We saved all retrieved data as raw JSON (a persistent storage location may be <a href="next_steps.htm">in the cards</a>), and carefully scheduled our &ldquo;pulls&rdquo; to re-retrieve more recent tweets and update our observations about their retweet and favorite counts. Finally, we ran a consolidation process to remove any duplicate records before analysis.</p>
 
-	<p class="bg-info" style="padding: 15px; margin: auto 30px;">View our code on GitHub for <a href="https://github.com/micahlanier/social-news/blob/master/src/twitter/downloadRawTweets.py">retrieving recent tweets</a> (within the 3,200 tweet limit) and <a href="https://github.com/micahlanier/social-news/blob/master/src/twitter/scrapeOlderTweets.py">scraping older tweets</a>. The former can traverse a list of accounts; the latter must be run for a single account. <a href="https://github.com/micahlanier/social-news/blob/master/src/twitter/consolidateRawTweets.py">This script</a> consolidates all tweets before analysis.</p>
+	<p class="bg-info">View our code on GitHub for <a href="https://github.com/micahlanier/social-news/blob/master/src/twitter/downloadRawTweets.py">retrieving recent tweets</a> (within the 3,200 tweet limit) and <a href="https://github.com/micahlanier/social-news/blob/master/src/twitter/scrapeOlderTweets.py">scraping older tweets</a>. The former can traverse a list of accounts; the latter must be run for a single account. <a href="https://github.com/micahlanier/social-news/blob/master/src/twitter/consolidateRawTweets.py">This script</a> consolidates all tweets before analysis.</p>
 
 	<h3>Facebook</h3>
 
@@ -97,13 +97,13 @@
 
 	<p>Into raw JSON that we can store and manipulate. This turns out to be an easier problem than retrieving tweets: publishers post less often on Facebook, and the company did not enforce API limits that hindered our efforts to draw a large dataset of posts. To retrieve this data, our Python scripts queried the appropriate <a href="https://developers.facebook.com/docs/graph-api/reference/v2.2/user/feed/">Graph API</a> for recent time ranges, for each organization. As with Twitter, we retrieved this data progressively (to ensure up-to-date like, comment, and share counts), and consolidated the latest data we had for each post before analysis.</p>
 
-	<p class="bg-info" style="padding: 15px; margin: auto 30px;">Check out our <a href="https://github.com/micahlanier/social-news/blob/master/src/fb/downloadRawFbPosts.py">post retrieval</a> and <a href="https://github.com/micahlanier/social-news/blob/master/src/fb/consolidateRawFbPosts.py">consolidation</a> code on GitHub.</p>
+	<p class="bg-info">Check out our <a href="https://github.com/micahlanier/social-news/blob/master/src/fb/downloadRawFbPosts.py">post retrieval</a> and <a href="https://github.com/micahlanier/social-news/blob/master/src/fb/consolidateRawFbPosts.py">consolidation</a> code on GitHub.</p>
 
 	<h3>Bitly</h3>
 
 	<p>Much like the above steps, we relied on Bitly&rsquo;s API to retrieve <a href="http://dev.bitly.com/link_metrics.html#v3_link_clicks">link clicks</a> for all Bitly links that we found on Twitter and Facebook. Though Bitly provides very fine resolution (down to the hour) of click data (see <a href="https://bitly.com/1tbvqmD+">an example</a>), we restricted ourselves to aggregate figures. Our process was simple: we identified all such links in each post (whether they were bit.ly links or used custom domains like cnn.it) and queried the API for their click figures.</p>
 
-	<p class="bg-info" style="padding: 15px; margin: auto 30px;">Once again, our Bitly API retrieval code is <a href="https://github.com/micahlanier/social-news/blob/master/src/bitly/getBitlyTraffic.py">on GitHub</a>. It reads consolidated Facebook and Twitter posts and queries the API for anything it has not yet seen (allowing it to be run progressively over time).</p>
+	<p class="bg-info">Once again, our Bitly API retrieval code is <a href="https://github.com/micahlanier/social-news/blob/master/src/bitly/getBitlyTraffic.py">on GitHub</a>. It reads consolidated Facebook and Twitter posts and queries the API for anything it has not yet seen (allowing it to be run progressively over time).</p>
 
 	<h3>URL Destinations</h3>
 
@@ -111,7 +111,7 @@
 
 	<p>To figure out where links lead, we designed our process to make HTTP <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html">HEAD</a> requests (to not disrupt click counts) and avoid automatic redirections. We then followed redirections &ldquo;manually&rdquo; until discovering what we were confident to be the final destination of the redirection chain (the publisher&rsquo;s website). Without following that URL (to avoid unnecessary requests), we moved on to the next link. This process took some time to debug but eventually allowed us to gather information about almost 200,000 social media links.</p>
 
-	<p class="bg-info" style="padding: 15px; margin: auto 30px;">See <a href="https://github.com/micahlanier/social-news/blob/master/src/urls/scrapeUrls.py">our URL traversal code</a> for a look at how we retrieved URL information.</p>
+	<p class="bg-info">See <a href="https://github.com/micahlanier/social-news/blob/master/src/urls/scrapeUrls.py">our URL traversal code</a> for a look at how we retrieved URL information.</p>
 
 	<h2>Data &ldquo;Wrangling&rdquo; &amp; Merging <small>Turn raw data into into something we <em>want</em>.</small></h2>
 	<p>We will now show an article example to illustrate how we are able to match articles from Twitter and Facebook posts</p>

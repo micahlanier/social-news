@@ -38,3 +38,6 @@ iframe.twitter-tweet { margin-left: auto !important; margin-right: auto !importa
 
 /* Ensure space at bottom. */
 body { margin-bottom: 24px; }
+
+/* Padding for blue boxes. */
+p.bg-info { padding: 15px; margin: auto 30px; }
